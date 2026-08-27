@@ -6,7 +6,6 @@ rank_bm25
 openai
 tenacity
 tqdm
-ragas
 matplotlib
 python-dotenv
 pytest

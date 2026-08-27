@@ -45,7 +45,7 @@ python -m pytest tests/ -v
 | `data/` — ingestion, chunking, KB variants, query set | done |
 | `retrieval/` — lexical / dense / hybrid retrievers, FAISS+BM25 index store | done |
 | `generation/` — prompt templates, OpenAI generation client | done |
-| `evaluation/` — retrieval metrics, Ragas generation metrics, robustness tests | not yet built |
+| `evaluation/` — retrieval metrics, generation metrics, robustness tests | done |
 | `experiments/` — sweep runner, resumable results store | not yet built |
 | `analysis/` — aggregation, plots, CSV export | not yet built |
 
@@ -137,6 +137,42 @@ All of the above is tested with fake/injected clients (no network, no API key ne
 ```bash
 python -m generation.client   # makes one real embedding + one real chat completion call
 ```
+
+## Evaluation module
+
+`evaluation/` implements the retrieval and generation quality metrics, ground-truth derivation,
+and the robustness/perturbation test:
+
+- `relevance_judgments.py` — for each query, the set of relevant `chunk_id`s in a given KB
+  variant (see "Design decisions" below). Can legitimately be empty for a query under `reduced`.
+- `retrieval_metrics.py` — Precision@k, Recall@k, MRR, NDCG@k, binary relevance. Metrics that are
+  mathematically undefined when a query has zero relevant chunks (Recall, MRR, NDCG) return
+  `float('nan')`, not `0.0` -- `0.0` would silently conflate "retrieval missed it" with "there was
+  nothing to find," which are different findings for the thesis. Aggregate with
+  `pandas`' nan-aware `.mean(skipna=True)`.
+- `robustness.py` — mechanical context perturbation (`drop_top_relevant`, `inject_noise_chunk`,
+  `select_noise_chunk`) plus a `RobustnessComparison` delta bookkeeping dataclass. No OpenAI
+  dependency; fully deterministic. Choosing which query/noise chunk to perturb and re-running
+  generation on the perturbed context is the experiment harness's job.
+- `generation_metrics.py` — faithfulness, answer relevance, context relevance, computed via
+  LLM-as-judge against the project's own `OpenAIClient` (see decision below), each independently
+  testable with a fake client returning canned JSON.
+
+**Decision: Ragas was dropped in favor of a self-built implementation of its scoring logic.**
+The build spec asked for Ragas "or replicate its scoring logic if Ragas integration proves
+awkward." As of this writing, `ragas` 0.4.3 (the current latest) fails to import at all after a
+clean `pip install ragas`: `ragas/llms/base.py` unconditionally imports
+`langchain_community.chat_models.vertexai.ChatVertexAI`, which no longer exists at that import
+path in current `langchain-community`. Pinning `langchain-community` back to a version that still
+has it breaks `langchain_openai`'s required `langchain-core` version instead -- verified there is
+no consistent pin across that dependency tree at the time of writing (`langchain-classic`,
+`langgraph`, and `langgraph-sdk` all also pin conflicting `langchain-core` ranges). Chasing that
+further would mean building the thesis's evaluation pipeline on a dependency chain that may not
+even be pip-installable months from now at defense time. `evaluation/generation_metrics.py`
+reimplements Ragas' actual approach directly (claim-level faithfulness via LLM entailment
+judgment, answer relevance via reverse-generated-question cosine similarity, context relevance
+via per-passage LLM relevance judgment) with every judge prompt inline and quotable verbatim in
+the methodology chapter, and zero dependency on the langchain ecosystem.
 
 ### Design decisions (see full rationale in-repo / thesis methodology chapter)
 
