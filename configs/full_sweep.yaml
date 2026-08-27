@@ -1,0 +1,39 @@
+# Full experiment sweep config. Run with:
+#   python -m experiments.run_sweep --config configs/full_sweep.yaml
+#
+# Sweeps every (retrieval_method x kb_variant) combination over the fixed query
+# set, holding the query set, LLM, prompt template, and top_k fixed throughout
+# -- so any metric difference between runs is attributable to retrieval, not
+# incidental generation-side changes. Cite these exact values in the
+# methodology chapter.
+
+kb_variants_config: configs/kb_variants.yaml
+generation_config: configs/generation.yaml
+query_set: datasets/processed/query_set.jsonl
+
+retrieval_methods: [lexical, dense, hybrid]
+kb_variants: [curated, mixed, reduced]
+top_k: 5
+
+hybrid:
+  k_per_retriever: 50   # candidates each sub-retriever contributes before RRF fusion
+
+generation_metrics:
+  enabled: true
+  answer_relevance_num_questions: 3
+
+robustness:
+  enabled: true
+  seed: 123
+  # Perturbation (drop top relevant chunk / inject an off-topic distractor) is run
+  # against only this one retrieval method, applied on top of every KB variant, to
+  # bound API cost -- it's a 2x add-on to that slice of the grid, not a 3x add-on
+  # to the whole sweep. `dense` is the default since it's the retrieval method most
+  # directly sensitive to which chunks end up in the embedding-similarity neighborhood.
+  retrieval_method: dense
+
+paths:
+  processed_data_dir: datasets/processed
+  artifacts_root: artifacts
+  embedding_cache: artifacts/embedding_cache.sqlite
+  results: results/full_sweep.jsonl

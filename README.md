@@ -46,7 +46,7 @@ python -m pytest tests/ -v
 | `retrieval/` — lexical / dense / hybrid retrievers, FAISS+BM25 index store | done |
 | `generation/` — prompt templates, OpenAI generation client | done |
 | `evaluation/` — retrieval metrics, generation metrics, robustness tests | done |
-| `experiments/` — sweep runner, resumable results store | not yet built |
+| `experiments/` — sweep runner, resumable results store | done |
 | `analysis/` — aggregation, plots, CSV export | not yet built |
 
 ## Running the data layer
@@ -173,6 +173,39 @@ reimplements Ragas' actual approach directly (claim-level faithfulness via LLM e
 judgment, answer relevance via reverse-generated-question cosine similarity, context relevance
 via per-passage LLM relevance judgment) with every judge prompt inline and quotable verbatim in
 the methodology chapter, and zero dependency on the langchain ecosystem.
+
+## Experiment harness
+
+`experiments/` runs the full grid and is the single documented end-to-end entry point:
+
+```bash
+python -m experiments.run_sweep --config configs/full_sweep.yaml
+```
+
+- `config.py` — `load_sweep_config` assembles a `SweepConfig` from `configs/full_sweep.yaml` plus
+  the KB-variant and generation configs it references, exposing `kb_config_hash` (used to locate
+  `artifacts/<hash>/<variant>/`) and `kb_variant_chunks_path(variant)` (locates
+  `datasets/processed/kb_<variant>/chunks.jsonl`, built earlier by `data.kb_variants`).
+- `results_store.py` — `ResultsStore`: append-only JSONL, `load_completed_keys()` for resumability,
+  tolerant of a malformed trailing line (e.g. from a process killed mid-write).
+- `runner.py` — `run_sweep` iterates `kb_variant x retrieval_method x query`, holding the query
+  set/LLM/prompt template/top_k fixed throughout (per `configs/full_sweep.yaml`). For each
+  combination not already in the results file: retrieve, compute retrieval metrics, generate,
+  compute generation metrics, log one record. A query that raises after the client's own
+  retry/backoff is exhausted is logged as a `record_type: "error"` record and **not** marked
+  completed, so the next run retries it rather than silently dropping it. Robustness perturbations
+  (`evaluation.robustness`) run as an add-on against whichever single retrieval method
+  `robustness.retrieval_method` names (default `dense`) -- a 2x cost add-on to that slice of the
+  grid, not a 3x add-on to the whole sweep.
+- `run_sweep.py` — the CLI entry point.
+
+Tested at two levels: `run_standard_query` / `run_robustness_for_query` / `build_retriever` in
+isolation against stub retrievers and a fake chat+embed client (`tests/test_runner.py`), and the
+full `run_sweep` orchestration end-to-end against a small synthetic on-disk KB + real FAISS/BM25
+index building + real resumability (`tests/test_run_sweep_integration.py`) -- the fake client there
+responds correctly to any judge prompt by reading the required array length out of the prompt text
+itself (`evaluation/generation_metrics.py`'s prompts literally say "exactly N boolean values"),
+rather than needing a hand-scripted response sequence.
 
 ### Design decisions (see full rationale in-repo / thesis methodology chapter)
 
