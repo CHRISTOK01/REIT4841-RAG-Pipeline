@@ -47,7 +47,7 @@ python -m pytest tests/ -v
 | `generation/` — prompt templates, OpenAI generation client | done |
 | `evaluation/` — retrieval metrics, generation metrics, robustness tests | done |
 | `experiments/` — sweep runner, resumable results store | done |
-| `analysis/` — aggregation, plots, CSV export | not yet built |
+| `analysis/` — aggregation, plots, CSV export | done |
 
 ## Running the data layer
 
@@ -219,15 +219,45 @@ rather than needing a hand-scripted response sequence.
   own QA pair's answer text. This is document-level, not manually verified passage-level,
   relevance — a simplifying assumption worth stating explicitly in the methodology chapter.
 
+## Analysis module
+
+`analysis/` turns `results/*.jsonl` into thesis-ready output:
+
+```bash
+python -m analysis.export_csv --results results/full_sweep.jsonl --out-dir reports
+```
+
+- `aggregate.py` — `load_standard_results` / `load_robustness_results` flatten the JSONL into
+  pandas DataFrames; `aggregate_standard_metrics` / `aggregate_robustness_deltas` group-mean them
+  (default `kb_variant x retrieval_method`, and `kb_variant x perturbation` respectively). Each
+  metric gets its own `<metric>_n` count column alongside the group's total row count `n` --
+  these can differ, since `recall_at_k` / `mrr` / `ndcg_at_k` (and robustness deltas built from
+  them) are `NaN`, not just low, for a query with zero relevant chunks, while `precision_at_k` is
+  always defined. A single shared `n` would silently overstate the sample size behind those
+  specific means.
+- `plots.py` — grouped bar charts (KB variant on the x-axis, one bar per retrieval method or
+  perturbation type) saved as PNG via matplotlib's non-interactive `Agg` backend.
+- `export_csv.py` — the canonical output of a sweep: `results_per_query.csv`,
+  `results_aggregated.csv` (the comparison table for the methodology chapter),
+  `robustness_per_query.csv` / `robustness_aggregated.csv` if robustness was run, and
+  `figures/*.png`.
+
+Validated against a realistic synthetic 108-standard-row / 72-robustness-row sweep (3 KB variants
+x 3 retrieval methods x 12 queries, with `reduced` deliberately including some zero-relevant-chunk
+queries to exercise the NaN-handling path): the aggregated table came out in the expected
+`curated > mixed > reduced` and `hybrid > dense > lexical` order, and the robustness figure showed
+consistent negative deltas (`drop_top_relevant` more severe than `inject_noise`) across all three
+KB variants -- both spot-checked visually, not just asserted in `pytest`.
+
 ## Repository layout
 
 ```
-data/          ingestion, chunking, KB variant construction, query set sampling (code)
-retrieval/     Retriever implementations + FAISS/BM25 index persistence (pending)
-generation/    Prompt templates + OpenAI generation client (pending)
-evaluation/    Retrieval metrics, Ragas-based generation metrics, robustness tests (pending)
-experiments/   Sweep runner, resumable append-only results store (pending)
-analysis/      Aggregation, plots, CSV export for thesis figures (pending)
+data/          ingestion, chunking, KB variant construction, query set sampling
+retrieval/     Retriever implementations + FAISS/BM25 index persistence
+generation/    Prompt templates + OpenAI generation client
+evaluation/    Retrieval metrics, generation metrics, robustness tests
+experiments/   Sweep runner, resumable append-only results store
+analysis/      Aggregation, plots, CSV export for thesis figures
 configs/       YAML configs for every stage, citeable in the methodology chapter
 tests/         pytest suite for all deterministic (non-LLM) logic
 datasets/      gitignored: raw MedQuAD download + processed corpus/KB-variant/query-set JSONL
