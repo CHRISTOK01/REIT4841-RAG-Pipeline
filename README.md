@@ -43,7 +43,7 @@ python -m pytest tests/ -v
 | Module | Status |
 |---|---|
 | `data/` — ingestion, chunking, KB variants, query set | done |
-| `retrieval/` — lexical / dense / hybrid retrievers, FAISS+BM25 index store | not yet built |
+| `retrieval/` — lexical / dense / hybrid retrievers, FAISS+BM25 index store | done |
 | `generation/` — prompt templates, OpenAI generation client | not yet built |
 | `evaluation/` — retrieval metrics, Ragas generation metrics, robustness tests | not yet built |
 | `experiments/` — sweep runner, resumable results store | not yet built |
@@ -84,6 +84,27 @@ download):
 - All sampling (base corpus selection, noise injection, topic dropout, query set selection) is
   seeded (default `seed: 42`) and deterministic — rerunning `data.kb_variants` or `data.query_set`
   with the same config reproduces identical output.
+
+## Retrieval module
+
+`retrieval/` implements the common `Retriever` protocol (`retrieve(query, k) -> list[RetrievedChunk]`)
+with three implementations, plus the plumbing to make them cheap and reproducible to rerun:
+
+- `LexicalRetriever` (`retrieval/lexical.py`) — BM25 (`rank_bm25`) over chunk text.
+- `DenseRetriever` (`retrieval/dense.py`) — OpenAI embeddings + FAISS `IndexFlatIP` cosine search.
+  The embedding call is injected (`embed_fn`) rather than hardcoded to the OpenAI SDK, so the
+  module and its tests have no network/API-key dependency; the real OpenAI-backed embedder gets
+  wired in by the generation/experiments layer.
+- `HybridRetriever` (`retrieval/hybrid.py`) — reciprocal rank fusion (RRF) over any set of
+  sub-retrievers; the fusion function is swappable (pass a different callable matching `FusionFn`).
+- `retrieval/embedding_cache.py` — a SQLite-backed cache keyed by `(model, text)`, so a given
+  chunk or query is only ever sent to the embeddings API once across all runs.
+- `retrieval/index_store.py` — persists/loads a KB variant's FAISS index, BM25 index, and chunk
+  metadata under `artifacts/<config_hash>/<variant>/`; `build_or_load_variant_indexes` skips
+  rebuilding (and re-embedding) an index that's already on disk for that config hash.
+
+Scale check against the real `curated` KB variant (3,715 chunks): BM25 index build ~0.2s, FAISS
+index build ~1s, a single retrieval call ~5ms — comfortably laptop-CPU scale.
 
 ### Design decisions (see full rationale in-repo / thesis methodology chapter)
 
