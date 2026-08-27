@@ -1,0 +1,10 @@
+# Generation config -- held constant across every retrieval/KB-variant comparison in a
+# sweep, so any difference in output quality is attributable to retrieval, not to the
+# generation model or prompt changing between runs. Cite these exact values in the
+# methodology chapter.
+
+model: gpt-4o-mini
+embedding_model: text-embedding-3-small
+prompt_template_id: wellness_summary_v1   # see generation/prompts.py
+temperature: 0.2
+max_tokens: 800

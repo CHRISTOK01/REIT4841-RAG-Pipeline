@@ -44,7 +44,7 @@ python -m pytest tests/ -v
 |---|---|
 | `data/` — ingestion, chunking, KB variants, query set | done |
 | `retrieval/` — lexical / dense / hybrid retrievers, FAISS+BM25 index store | done |
-| `generation/` — prompt templates, OpenAI generation client | not yet built |
+| `generation/` — prompt templates, OpenAI generation client | done |
 | `evaluation/` — retrieval metrics, Ragas generation metrics, robustness tests | not yet built |
 | `experiments/` — sweep runner, resumable results store | not yet built |
 | `analysis/` — aggregation, plots, CSV export | not yet built |
@@ -105,6 +105,38 @@ with three implementations, plus the plumbing to make them cheap and reproducibl
 
 Scale check against the real `curated` KB variant (3,715 chunks): BM25 index build ~0.2s, FAISS
 index build ~1s, a single retrieval call ~5ms — comfortably laptop-CPU scale.
+
+## Generation module
+
+`generation/` produces one structured wellness-summary response per query:
+
+- `prompts.py` — versioned prompt template (`wellness_summary_v1`, config: `configs/generation.yaml`).
+  Numbers retrieved passages for the model, instructs it to cite passage number(s) after every
+  claim in a `## Key Points` list, and to say explicitly when the provided context doesn't fully
+  answer the question rather than filling the gap from outside knowledge.
+- `parsing.py` — deterministic Markdown-section + citation parser (no LLM call) that turns raw
+  model output into `GenerationOutput(summary, key_points, disclaimer)`, resolving each citation
+  back to a `chunk_id` via the passage-number map from `prompts.py`. A citation to a passage
+  number that was never given to the model (a hallucinated citation) is kept as a visible flag
+  (`cited_passage_numbers`) but drops out of `cited_chunk_ids` -- useful directly as a
+  faithfulness/robustness signal later.
+- `client.py` — `OpenAIClient`: chat completions + embeddings, both with explicit tenacity
+  retry/backoff on `RateLimitError` / `APIConnectionError` / `APITimeoutError` /
+  `InternalServerError` (the SDK's own retries are disabled so this is the single place retry
+  policy is owned/cited). `embed_fn(model)` returns a callable that plugs directly into
+  `retrieval.dense.DenseRetriever` / the embedding cache. Reads `OPENAI_API_KEY` from the
+  environment only -- never hardcoded.
+- `generator.py` — `generate_summary(client, question, retrieved_chunks, model, ...)` renders the
+  prompt, calls the client, parses the response, and returns a `GenerationRecord` with everything
+  the results store will need to log (question, model, prompt id, retrieved chunk ids, raw text,
+  parsed output, UTC timestamp).
+
+All of the above is tested with fake/injected clients (no network, no API key needed to run
+`pytest`). Real OpenAI connectivity can be checked any time with:
+
+```bash
+python -m generation.client   # makes one real embedding + one real chat completion call
+```
 
 ### Design decisions (see full rationale in-repo / thesis methodology chapter)
 
