@@ -5,7 +5,6 @@ faiss-cpu
 rank_bm25
 openai
 tenacity
-tqdm
 matplotlib
 python-dotenv
 pytest
