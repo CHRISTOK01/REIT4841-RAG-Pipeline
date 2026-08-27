@@ -1,0 +1,30 @@
+# Environment / secrets
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+venv/
+
+# Generated data / artifacts (reproducible from code + configs, not committed)
+datasets/raw/
+datasets/processed/
+artifacts/*
+results/*.jsonl
+results/raw/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Keep directory structure with placeholder files
+!datasets/.gitkeep
+!artifacts/.gitkeep
+!results/.gitkeep

@@ -1,0 +1,15 @@
+# KB variant construction config -- cite these exact values in the methodology chapter.
+# config_hash() over these values names the artifact directories under datasets/processed/
+# and (later) artifacts/, so changing any value here produces a fresh, non-colliding
+# build instead of silently overwriting a previous experiment's KB/index.
+
+kb_variant:
+  seed: 42                             # RNG seed for all sampling (base corpus, noise injection, topic dropout)
+  base_corpus_size: 1500               # number of source Q&A documents sampled into the curated base corpus
+  min_answer_words: 15                 # quality filter: drop QA pairs whose answer is shorter than this
+  mixed_noise_ratio: 0.3               # mixed = curated + (this fraction * curated size) distractor docs
+  reduced_drop_topic_fraction: 0.35    # reduced = curated with this fraction of topics/focuses removed entirely
+
+chunking:
+  chunk_size_words: 120
+  chunk_overlap_words: 20
