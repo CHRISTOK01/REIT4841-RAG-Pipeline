@@ -1,0 +1,6 @@
+# Fixed query set sampled from the curated KB documents (data/query_set.py).
+# Cite these values in the methodology chapter.
+
+query_set:
+  seed: 42
+  num_queries: 150   # stratified by MedQuAD question type

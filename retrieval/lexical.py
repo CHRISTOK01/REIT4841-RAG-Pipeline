@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 
+import numpy as np
 from rank_bm25 import BM25Okapi
 
 from data.schemas import Chunk
@@ -31,10 +32,24 @@ class LexicalRetriever:
         return cls(chunks)
 
     def retrieve(self, query: str, k: int) -> list[RetrievedChunk]:
+        """Top-k chunks by BM25 score, highest first.
+
+        Only chunks that share at least one term with the query are returned,
+        so the result can be shorter than k: a chunk with no lexical match was
+        not retrieved, and padding the list with arbitrary zero-score chunks
+        would hand them rank-based credit in hybrid fusion.
+        Ties are broken by corpus position (earlier chunk first).
+        """
         if not self.chunks:
             return []
-        scores = self.bm25.get_scores(tokenize(query))
-        top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:k]
+        query_terms = tokenize(query)
+        scores = np.asarray(self.bm25.get_scores(query_terms), dtype=np.float64)
+        unique_terms = set(query_terms)
+        matching = [
+            i for i, term_freqs in enumerate(self.bm25.doc_freqs) if not unique_terms.isdisjoint(term_freqs)
+        ]
+        matching.sort(key=lambda i: (-scores[i], i))
+        top_indices = matching[:k]
         return [
             RetrievedChunk(
                 chunk_id=self.chunks[idx].chunk_id,

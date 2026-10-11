@@ -55,7 +55,7 @@ def chunk_documents(docs: list[SourceDocument], config: ChunkingConfig) -> list[
 
 def save_chunks_jsonl(chunks: list[Chunk], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
+    with path.open("w", encoding="utf-8", newline="\n") as f:
         for chunk in chunks:
             f.write(json.dumps(chunk.__dict__, ensure_ascii=False) + "\n")
 

@@ -1,0 +1,3 @@
+kb_variant,perturbation,faithfulness_delta,answer_relevance_delta,context_relevance_delta,faithfulness_delta_n,answer_relevance_delta_n,context_relevance_delta_n,n
+curated,drop_top_relevant,0.0,-0.3092222942246331,-0.11111111111111109,3,3,3,3
+curated,inject_noise,0.0,-7.70886739095052e-05,0.0,3,3,3,3

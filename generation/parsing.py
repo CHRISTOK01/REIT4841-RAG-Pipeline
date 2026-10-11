@@ -11,10 +11,15 @@ import re
 from dataclasses import dataclass
 
 _SECTION_RE = re.compile(
-    r"##\s*(Summary|Key Points|Disclaimer)\s*\n(.*?)(?=\n##\s*\w|\Z)", re.IGNORECASE | re.DOTALL
+    # `[ \t]*` (not `\s*`) after the heading and a body that may start at a
+    # heading: an empty section must parse as empty, not swallow the blank line
+    # and capture the next heading as its text.
+    r"^#{1,6}[ \t]*(Summary|Key Points|Disclaimer)[ \t]*\n(.*?)(?=^#{1,6}[ \t]*\w|\Z)",
+    re.IGNORECASE | re.DOTALL | re.MULTILINE,
 )
 _CITATION_RE = re.compile(r"\[(\d+)\]")
-_KEY_POINT_LINE_RE = re.compile(r"^\s*\d+[.)]\s*(.+)$")
+# A key point is a numbered ("1." / "1)") or bulleted ("-", "*") line.
+_KEY_POINT_LINE_RE = re.compile(r"^\s*(?:\d+[.)]|[-*])\s+(.+)$")
 
 
 @dataclass(frozen=True)

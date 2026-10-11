@@ -3,8 +3,10 @@
 # generation model or prompt changing between runs. Cite these exact values in the
 # methodology chapter.
 
-model: gpt-4o-mini
+model: gpt-4o-mini-2024-07-18              # dated snapshot, not the floating `gpt-4o-mini` alias
+judge_model: gpt-4o-mini-2024-07-18        # model that scores the answers (evaluation/generation_metrics.py)
 embedding_model: text-embedding-3-small
-prompt_template_id: wellness_summary_v1   # see generation/prompts.py
+prompt_template_id: wellness_summary_v1    # must match generation/prompts.py; a mismatch is an error
 temperature: 0.2
 max_tokens: 800
+max_attempts: 3                            # regenerate an unusable (cut-off / off-format) answer up to this many times

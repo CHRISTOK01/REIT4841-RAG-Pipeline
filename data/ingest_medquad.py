@@ -102,7 +102,13 @@ def parse_document_xml(xml_path: Path, subset: str) -> list[SourceDocument]:
             question_elem.get("qtype", "unknown") if question_elem is not None else "unknown"
         )
 
-        doc_id = f"{subset}:{document_id}:{question_id}"
+        # Keyed on the file stem, not <Document id>: MedQuAD ships several CancerGov
+        # files (e.g. 0000013_2.xml, 0000013_2_1.xml, ...) that reuse one Document id
+        # AND the same qids for different questions, so id+qid is not unique.
+        if xml_path.stem == document_id:
+            doc_id = f"{subset}:{document_id}:{question_id}"
+        else:
+            doc_id = f"{subset}:{xml_path.stem}:{question_id}"
         docs.append(
             SourceDocument(
                 doc_id=doc_id,
@@ -132,12 +138,28 @@ def load_medquad(
             raise FileNotFoundError(f"Expected MedQuAD subset folder not found: {subset_dir}")
         for xml_path in sorted(subset_dir.glob("*.xml")):
             all_docs.extend(parse_document_xml(xml_path, subset_name))
+    assert_unique_doc_ids(all_docs)
     return all_docs
+
+
+def assert_unique_doc_ids(docs: list[SourceDocument]) -> None:
+    """Relevance judgments key on doc_id, so two documents sharing one would
+    silently merge their relevant-chunk sets. Fail loudly instead."""
+    seen: set[str] = set()
+    duplicates: set[str] = set()
+    for doc in docs:
+        if doc.doc_id in seen:
+            duplicates.add(doc.doc_id)
+        seen.add(doc.doc_id)
+    if duplicates:
+        raise ValueError(
+            f"{len(duplicates)} duplicate doc_id(s) in corpus, e.g. {sorted(duplicates)[:3]}"
+        )
 
 
 def save_source_documents_jsonl(docs: list[SourceDocument], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
+    with path.open("w", encoding="utf-8", newline="\n") as f:
         for doc in docs:
             f.write(json.dumps(doc.__dict__, ensure_ascii=False) + "\n")
 

@@ -1,78 +1,40 @@
-import random
-from pathlib import Path
+"""Unit tests for the runner's building blocks. The orchestration itself is
+tested end to end in tests/test_run_sweep_integration.py."""
+
+from dataclasses import replace
 
 import pytest
 
-from data.kb_variants import KBVariantConfig
 from data.query_set import QueryItem
-from data.schemas import Chunk, ChunkingConfig
-from evaluation.generation_metrics import GenerationMetrics
-from experiments.config import (
-    GenerationMetricsConfig,
-    GenerationSettings,
-    HybridConfig,
-    RobustnessConfig,
-    SweepConfig,
-)
+from data.schemas import Chunk
+from experiments.config import HybridConfig
 from experiments.runner import (
+    Perturbed,
+    build_perturbation,
     build_retriever,
+    keyed_rng,
+    record_seed,
     robustness_run_key,
-    run_robustness_for_query,
-    run_standard_query,
     standard_run_key,
 )
 from retrieval.base import RetrievedChunk
 from retrieval.hybrid import HybridRetriever
-
-RAW_RESPONSE = """## Summary
-Short answer about the topic.
-
-## Key Points
-1. A grounded claim about the topic. [1]
-
-## Disclaimer
-Not medical advice.
-"""
-
-
-class FakeSweepClient:
-    def __init__(self, chat_responses, embed_vectors=None):
-        self.chat_responses = list(chat_responses)
-        self.chat_calls = []
-        self.embed_vectors = embed_vectors or {}
-        self.embed_calls = []
-
-    def chat_completion(self, messages, model, temperature, max_tokens):
-        self.chat_calls.append(messages)
-        return self.chat_responses.pop(0)
-
-    def embed(self, texts, model):
-        self.embed_calls.append(list(texts))
-        return [self.embed_vectors.get(t, [0.0, 0.0]) for t in texts]
-
-    def embed_fn(self, model):
-        def _fn(texts):
-            return self.embed(list(texts), model)
-
-        return _fn
+from tests.harness_fixtures import make_workspace
 
 
 class StubRetriever:
-    def __init__(self, results):
-        self.results = results
-
     def retrieve(self, query, k):
-        return self.results[:k]
+        return []
 
 
-def rc(chunk_id: str, rank: int, text: str = "context text") -> RetrievedChunk:
-    return RetrievedChunk(chunk_id=chunk_id, doc_id=chunk_id.split("#")[0], text=text, score=1.0, rank=rank)
+def rc(chunk_id: str, rank: int) -> RetrievedChunk:
+    return RetrievedChunk(chunk_id=chunk_id, doc_id=chunk_id.split("#")[0], text=f"text-{chunk_id}", score=1.0 / rank, rank=rank)
 
 
-def make_chunk(chunk_id: str, focus: str, doc_id: str | None = None) -> Chunk:
+def make_chunk(chunk_id: str, focus: str) -> Chunk:
     return Chunk(
         chunk_id=chunk_id,
-        doc_id=doc_id or chunk_id.split("#")[0],
+        doc_id=chunk_id.split("#")[0],
         chunk_index=0,
         text=f"text-{chunk_id}",
         subset="Test",
@@ -82,204 +44,100 @@ def make_chunk(chunk_id: str, focus: str, doc_id: str | None = None) -> Chunk:
     )
 
 
-def make_config(generation_metrics_enabled: bool = True, top_k: int = 2) -> SweepConfig:
-    return SweepConfig(
-        retrieval_methods=["lexical", "dense", "hybrid"],
-        kb_variant_names=["curated"],
-        top_k=top_k,
-        hybrid=HybridConfig(),
-        generation_metrics=GenerationMetricsConfig(enabled=generation_metrics_enabled),
-        robustness=RobustnessConfig(),
-        kb_variant_config=KBVariantConfig(),
-        chunking_config=ChunkingConfig(),
-        generation=GenerationSettings(
-            model="gpt-test",
-            embedding_model="embed-test",
-            prompt_template_id="wellness_summary_v1",
-            temperature=0.2,
-            max_tokens=500,
-        ),
-        query_set_path=Path("unused"),
-        processed_data_dir=Path("unused"),
-        artifacts_root=Path("unused"),
-        embedding_cache_path=Path("unused"),
-        results_path=Path("unused"),
-    )
+QUERY = QueryItem(query_id="doc1", question="What about X?", subset="Test", focus="TopicA", question_type="information")
+KB = [make_chunk("doc1#0", "TopicA"), make_chunk("doc2#0", "TopicB"), make_chunk("doc3#0", "TopicC"), make_chunk("doc4#0", "TopicD")]
+BASELINE = [rc("doc2#0", 1), rc("doc1#0", 2), rc("doc3#0", 3)]
 
 
-def make_query(query_id: str = "doc1", focus: str = "TopicA") -> QueryItem:
-    return QueryItem(query_id=query_id, question="What about X?", subset="Test", focus=focus, question_type="information")
+@pytest.fixture
+def config(tmp_path):
+    return make_workspace(tmp_path)
 
 
-# -- key formatting ---------------------------------------------------------
-
-
-def test_standard_run_key_format():
-    assert standard_run_key("curated", "dense", "doc1") == "curated:dense:doc1"
-
-
-def test_robustness_run_key_format():
+def test_run_key_formats():
+    assert standard_run_key("curated", "dense", "GARD:1:1-2") == "curated:dense:GARD:1:1-2"
     assert robustness_run_key("curated", "dense", "doc1", "inject_noise") == "curated:dense:doc1:robustness:inject_noise"
 
 
-# -- build_retriever ----------------------------------------------------------
-
-
-def test_build_retriever_selects_correct_implementation():
-    lexical = StubRetriever([])
-    dense = StubRetriever([])
+def test_build_retriever_selects_the_right_implementation_and_passes_hybrid_settings():
+    lexical, dense = StubRetriever(), StubRetriever()
     assert build_retriever("lexical", lexical, dense, HybridConfig()) is lexical
     assert build_retriever("dense", lexical, dense, HybridConfig()) is dense
-
-    hybrid = build_retriever("hybrid", lexical, dense, HybridConfig(k_per_retriever=10))
+    hybrid = build_retriever("hybrid", lexical, dense, HybridConfig(k_per_retriever=10, rrf_k=7))
     assert isinstance(hybrid, HybridRetriever)
-    assert hybrid.k_per_retriever == 10
-
-
-def test_build_retriever_rejects_unknown_method():
+    assert (hybrid.k_per_retriever, hybrid.rrf_k, hybrid.retrievers) == (10, 7, [lexical, dense])
     with pytest.raises(ValueError):
-        build_retriever("unknown", StubRetriever([]), StubRetriever([]), HybridConfig())
+        build_retriever("unknown", lexical, dense, HybridConfig())
 
 
-# -- run_standard_query ----------------------------------------------------------
+def test_record_seed_depends_only_on_sweep_seed_repeat_and_key(config):
+    seed = record_seed(config, "curated:dense:q1")
+    assert seed == record_seed(config, "curated:dense:q1")
+    assert 0 <= seed < 2**31
+    assert seed != record_seed(config, "curated:dense:q2")
+    assert seed != record_seed(replace(config, seed=124), "curated:dense:q1")
+    assert seed != record_seed(replace(config, repeat=1), "curated:dense:q1")
+    assert seed == record_seed(replace(config, top_k=9, max_workers=7), "curated:dense:q1")
 
 
-def test_run_standard_query_full_record_with_metrics_enabled():
-    client = FakeSweepClient(
-        chat_responses=[RAW_RESPONSE, "[true]", '["generated q"]', "[true, false]"],
-        embed_vectors={"What about X?": [1.0, 0.0], "generated q": [1.0, 0.0]},
+def test_keyed_rng_is_reproducible_and_ignores_repeat(config):
+    draw = lambda cfg, *parts: keyed_rng(cfg, *parts).random()  # noqa: E731
+    assert draw(config, "noise", "curated", "q1") == draw(config, "noise", "curated", "q1")
+    assert draw(config, "noise", "curated", "q1") != draw(config, "noise", "curated", "q2")
+    assert draw(config, "noise", "curated", "q1") != draw(config, "random", "curated", "q1")
+    assert draw(config, "noise", "curated", "q1") != draw(replace(config, seed=1), "noise", "curated", "q1")
+    # repeat runs measure generation variance, so retrieval-side randomness must not move
+    assert draw(config, "random", "curated", "q1") == draw(replace(config, repeat=3), "random", "curated", "q1")
+
+
+def test_control_rerun_is_the_untouched_baseline(config):
+    result = build_perturbation("control_rerun", config, "curated", QUERY, KB, BASELINE, {"doc1#0"}, {"doc1#0"})
+    assert result == Perturbed(BASELINE, None, None)
+    assert result.retrieved is not BASELINE
+
+
+def test_drop_perturbation_names_what_it_dropped(config):
+    result = build_perturbation("drop_top_relevant", config, "curated", QUERY, KB, BASELINE, {"doc1#0"}, {"doc1#0"})
+    assert [c.chunk_id for c in result.retrieved] == ["doc2#0", "doc3#0"]
+    assert (result.changed_chunk_id, result.noise_chunk_id) == ("doc1#0", None)
+
+
+def test_drop_perturbation_explains_itself_when_nothing_relevant_was_retrieved(config):
+    result = build_perturbation("drop_top_relevant", config, "curated", QUERY, KB, BASELINE, {"doc9#0"}, {"doc9#0"})
+    assert result == "no relevant chunk in the baseline context to drop"
+
+
+def test_inject_perturbation_protects_lenient_relevant_chunks_and_avoids_retrieved_ones(config):
+    # doc3#0 is lenient-relevant, so the lowest-ranked replaceable chunk is doc2#0 (rank 1)
+    result = build_perturbation("inject_noise", config, "curated", QUERY, KB, BASELINE, {"doc1#0"}, {"doc1#0", "doc3#0"})
+    assert result.changed_chunk_id == "doc2#0"
+    assert result.noise_chunk_id == "doc4#0"  # the only chunk that is off-topic, not relevant and not already retrieved
+    assert [c.chunk_id for c in result.retrieved] == ["doc4#0", "doc1#0", "doc3#0"]
+
+
+def test_inject_perturbation_explains_itself_when_it_cannot_be_applied(config):
+    all_relevant = {"doc1#0", "doc2#0", "doc3#0"}
+    assert build_perturbation("inject_noise", config, "curated", QUERY, KB, BASELINE, {"doc1#0"}, all_relevant) == (
+        "every chunk in the baseline context is relevant; nothing to replace"
     )
-    retriever = StubRetriever(
-        [rc("doc1#0", 1, "context about topic"), rc("doc2#0", 2, "other context")]
-    )
-    config = make_config(generation_metrics_enabled=True, top_k=2)
-    query = make_query(query_id="doc1")
-
-    record = run_standard_query(client, retriever, query, {"doc1#0"}, config, "curated", "dense")
-
-    assert record["record_type"] == "standard"
-    assert record["run_key"] == "curated:dense:doc1"
-    assert record["retrieval_metrics"]["precision_at_k"] == 0.5
-    assert record["retrieval_metrics"]["recall_at_k"] == 1.0
-    assert record["retrieval_metrics"]["mrr"] == 1.0
-    assert record["generation"]["output"]["key_points"][0]["cited_chunk_ids"] == ["doc1#0"]
-    assert record["generation_metrics"]["faithfulness"] == 1.0
-    assert record["generation_metrics"]["answer_relevance"] == pytest.approx(1.0)
-    assert record["generation_metrics"]["context_relevance"] == pytest.approx(0.5)
-
-
-def test_run_standard_query_skips_generation_metrics_when_disabled():
-    client = FakeSweepClient(chat_responses=[RAW_RESPONSE])
-    retriever = StubRetriever([rc("doc1#0", 1, "context about topic")])
-    config = make_config(generation_metrics_enabled=False, top_k=1)
-    query = make_query(query_id="doc1")
-
-    record = run_standard_query(client, retriever, query, {"doc1#0"}, config, "curated", "lexical")
-
-    assert record["generation_metrics"] is None
-    assert len(client.chat_calls) == 1
-
-
-# -- run_robustness_for_query ----------------------------------------------------
-
-
-def test_run_robustness_returns_empty_without_baseline_metrics():
-    client = FakeSweepClient(chat_responses=[])
-    chunks = [make_chunk("doc1#0", "TopicA", "doc1")]
-    query = make_query(query_id="doc1", focus="TopicA")
-    config = make_config()
-
-    records = run_robustness_for_query(
-        client,
-        chunks,
-        query,
-        {"doc1#0"},
-        config,
-        "curated",
-        "dense",
-        baseline_retrieved=[rc("doc1#0", 1)],
-        baseline_generation_metrics=None,
-        rng=random.Random(1),
+    only_same_topic = [make_chunk("doc1#0", "TopicA"), make_chunk("doc5#0", "TopicA")]
+    assert build_perturbation("inject_noise", config, "curated", QUERY, only_same_topic, BASELINE, {"doc1#0"}, {"doc1#0"}) == (
+        "no off-topic chunk available to inject"
     )
 
-    assert records == []
-    assert client.chat_calls == []
+
+def test_inject_perturbation_picks_the_same_noise_chunk_every_time_for_a_query(config):
+    big_kb = KB + [make_chunk(f"extra{i}#0", f"Extra{i}") for i in range(40)]
+    picks = {
+        build_perturbation("inject_noise", config, "curated", QUERY, big_kb, BASELINE, {"doc1#0"}, {"doc1#0"}).noise_chunk_id
+        for _ in range(5)
+    }
+    assert len(picks) == 1
+    other_variant = build_perturbation("inject_noise", config, "mixed", QUERY, big_kb, BASELINE, {"doc1#0"}, {"doc1#0"})
+    other_query = build_perturbation("inject_noise", config, "curated", replace(QUERY, query_id="doc7"), big_kb, BASELINE, {"doc1#0"}, {"doc1#0"})
+    assert {other_variant.noise_chunk_id, other_query.noise_chunk_id} != picks  # keyed by variant and query
 
 
-def test_run_robustness_produces_drop_and_inject_records_with_deltas():
-    chunks = [make_chunk("doc1#0", "TopicA", "doc1"), make_chunk("doc2#0", "TopicB", "doc2")]
-    query = make_query(query_id="doc1", focus="TopicA")
-    config = make_config(top_k=3)
-    baseline_retrieved = [rc("doc1#0", 1, "context a"), rc("doc2#0", 2, "context b")]
-    baseline_metrics = GenerationMetrics(faithfulness=1.0, answer_relevance=1.0, context_relevance=1.0)
-
-    # drop_top_relevant leaves 1 context chunk (doc2#0); inject_noise leaves 3
-    # (doc1#0, doc2#0, + the injected noise chunk, capped at top_k=3) -- context
-    # relevance responses must match each perturbation's actual chunk count.
-    drop_perturbation_responses = [RAW_RESPONSE, "[true]", '["gen q"]', "[true]"]
-    inject_perturbation_responses = [RAW_RESPONSE, "[true]", '["gen q"]', "[true, false, true]"]
-    client = FakeSweepClient(
-        chat_responses=drop_perturbation_responses + inject_perturbation_responses,
-        embed_vectors={"What about X?": [1.0, 0.0], "gen q": [1.0, 0.0]},
-    )
-
-    records = run_robustness_for_query(
-        client,
-        chunks,
-        query,
-        {"doc1#0"},
-        config,
-        "curated",
-        "dense",
-        baseline_retrieved,
-        baseline_metrics,
-        rng=random.Random(7),
-    )
-
-    assert {r["perturbation"] for r in records} == {"drop_top_relevant", "inject_noise"}
-    for r in records:
-        assert r["record_type"] == "robustness"
-        assert r["baseline_generation_metrics"] == {
-            "faithfulness": 1.0,
-            "answer_relevance": 1.0,
-            "context_relevance": 1.0,
-        }
-        assert r["faithfulness_delta"] == 0.0  # perturbed also scored 1.0 via canned responses
-
-    drop_record = next(r for r in records if r["perturbation"] == "drop_top_relevant")
-    assert drop_record["noise_chunk_id"] is None
-    assert all(c["chunk_id"] != "doc1#0" for c in drop_record["perturbed_retrieved"])
-
-    inject_record = next(r for r in records if r["perturbation"] == "inject_noise")
-    assert inject_record["noise_chunk_id"] == "doc2#0"  # only chunk with a different focus
-    assert inject_record["perturbed_retrieved"][0]["chunk_id"] == "doc2#0"  # injected at rank 1
-
-
-def test_run_robustness_skips_drop_when_nothing_relevant_was_retrieved():
-    chunks = [make_chunk("doc1#0", "TopicA", "doc1"), make_chunk("doc2#0", "TopicB", "doc2")]
-    query = make_query(query_id="doc1", focus="TopicA")
-    config = make_config(top_k=3)
-    baseline_retrieved = [rc("other#0", 1, "irrelevant")]  # nothing here is in relevant_chunk_ids
-    baseline_metrics = GenerationMetrics(faithfulness=0.5, answer_relevance=0.5, context_relevance=0.5)
-
-    # only inject_noise applies here (drop is a no-op, see assertion below); it leaves
-    # 2 context chunks (the original "other#0" + the injected noise chunk).
-    client = FakeSweepClient(
-        chat_responses=[RAW_RESPONSE, "[true]", '["gen q"]', "[true, false]"],
-        embed_vectors={"What about X?": [1.0, 0.0], "gen q": [1.0, 0.0]},
-    )
-
-    records = run_robustness_for_query(
-        client,
-        chunks,
-        query,
-        {"doc1#0"},  # relevant chunk id never appears in baseline_retrieved
-        config,
-        "curated",
-        "dense",
-        baseline_retrieved,
-        baseline_metrics,
-        rng=random.Random(1),
-    )
-
-    assert {r["perturbation"] for r in records} == {"inject_noise"}  # drop skipped: nothing to drop
+def test_unknown_perturbation_is_rejected(config):
+    with pytest.raises(ValueError):
+        build_perturbation("shuffle", config, "curated", QUERY, KB, BASELINE, set(), set())

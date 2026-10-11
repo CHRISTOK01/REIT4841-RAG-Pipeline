@@ -1,6 +1,14 @@
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+markers = [
+    "realdata: runs against the real MedQuAD corpus / KB variants / embedding cache on disk (no API calls)",
+    "api: makes real, paid OpenAI calls; only runs with --run-api",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["data", "retrieval", "generation", "evaluation", "experiments", "analysis"]
 
 [tool.ruff]
 line-length = 100

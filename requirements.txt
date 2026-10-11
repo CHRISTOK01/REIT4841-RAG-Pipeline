@@ -1,10 +1,22 @@
-numpy
-pandas
-pyyaml
-faiss-cpu
-rank_bm25
-openai
-tenacity
-matplotlib
-python-dotenv
-pytest
+# Versions the pipeline was built, tested and run with (Python 3.12).
+
+# Pipeline
+numpy==2.2.6
+pandas==2.2.3
+scipy==1.18.1
+PyYAML==6.0.3
+faiss-cpu==1.15.0
+rank-bm25==0.2.2
+openai==1.109.1
+tenacity==8.5.0
+matplotlib==3.10.3
+python-dotenv==1.2.3
+tiktoken==0.14.0        # token counts for the cost estimate (optional: falls back to a word-count rule)
+
+# Tests and validation
+pytest==9.1.1
+pytest-cov==7.1.0
+hypothesis==6.168.5     # property-based tests
+ranx==0.3.21            # independent IR metric implementation (cross-checks)
+scikit-learn==1.9.1     # independent NDCG implementation (cross-check)
+httpx==0.28.1           # builds fake HTTP errors in tests (already a dependency of openai)

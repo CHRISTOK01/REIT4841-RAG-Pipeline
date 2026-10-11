@@ -1,0 +1,30 @@
+{"query_id": "CDC:0000255:0000255-2", "question": "How to prevent La Crosse Encephalitis ?", "subset": "CDC", "focus": "La Crosse Encephalitis", "question_type": "prevention"}
+{"query_id": "CDC:0000439:0000439-16", "question": "how can y. enterocolitica infections be treated for Yersinia ?", "subset": "CDC", "focus": "Yersinia", "question_type": "treatment"}
+{"query_id": "CancerGov:0000001_2:0000001_2-5", "question": "What is the outlook for Adult Acute Myeloid Leukemia ?", "subset": "CancerGov", "focus": "Adult Acute Myeloid Leukemia", "question_type": "outlook"}
+{"query_id": "CancerGov:0000014_2:0000014_2-5", "question": "What is the outlook for Uterine Sarcoma ?", "subset": "CancerGov", "focus": "Uterine Sarcoma", "question_type": "outlook"}
+{"query_id": "CancerGov:0000019_4:0000019_4-1", "question": "What is (are) Ovarian, Fallopian Tube, and Primary Peritoneal Cancer ?", "subset": "CancerGov", "focus": "Ovarian, Fallopian Tube, and Primary Peritoneal Cancer", "question_type": "information"}
+{"query_id": "CancerGov:0000024_1:0000024_1-3", "question": "What are the symptoms of Hypopharyngeal Cancer ?", "subset": "CancerGov", "focus": "Hypopharyngeal Cancer", "question_type": "symptoms"}
+{"query_id": "CancerGov:0000024_6:0000024_6-6", "question": "What are the stages of Oropharyngeal Cancer ?", "subset": "CancerGov", "focus": "Oropharyngeal Cancer", "question_type": "stages"}
+{"query_id": "CancerGov:0000024_7:0000024_7-7", "question": "What are the treatments for Paranasal Sinus and Nasal Cavity Cancer ?", "subset": "CancerGov", "focus": "Paranasal Sinus and Nasal Cavity Cancer", "question_type": "treatment"}
+{"query_id": "CancerGov:0000025_2:0000025_2-2", "question": "Who is at risk for Pancreatic Neuroendocrine Tumors (Islet Cell Tumors)? ?", "subset": "CancerGov", "focus": "Pancreatic Neuroendocrine Tumors (Islet Cell Tumors)", "question_type": "susceptibility"}
+{"query_id": "GARD:0000396:0000396-1", "question": "What are the symptoms of Anterior segment mesenchymal dysgenesis ?", "subset": "GARD", "focus": "Anterior segment mesenchymal dysgenesis", "question_type": "symptoms"}
+{"query_id": "GARD:0000481:0000481-2", "question": "What are the symptoms of Ascher Syndrome ?", "subset": "GARD", "focus": "Ascher Syndrome", "question_type": "symptoms"}
+{"query_id": "GARD:0000530:0000530-4", "question": "Is Autoimmune atrophic gastritis inherited ?", "subset": "GARD", "focus": "Autoimmune atrophic gastritis", "question_type": "inheritance"}
+{"query_id": "GARD:0000700:0000700-3", "question": "What causes Best vitelliform macular dystrophy ?", "subset": "GARD", "focus": "Best vitelliform macular dystrophy", "question_type": "causes"}
+{"query_id": "GARD:0000702:0000702-2", "question": "What are the symptoms of Beta ketothiolase deficiency ?", "subset": "GARD", "focus": "Beta ketothiolase deficiency", "question_type": "symptoms"}
+{"query_id": "GARD:0000735:0000735-2", "question": "What are the symptoms of Biotinidase deficiency ?", "subset": "GARD", "focus": "Biotinidase deficiency", "question_type": "symptoms"}
+{"query_id": "GARD:0000857:0000857-2", "question": "What are the symptoms of Brooke-Spiegler syndrome ?", "subset": "GARD", "focus": "Brooke-Spiegler syndrome", "question_type": "symptoms"}
+{"query_id": "GARD:0000941:0000941-1", "question": "What are the symptoms of Cardiac valvular dysplasia, X-linked ?", "subset": "GARD", "focus": "Cardiac valvular dysplasia, X-linked", "question_type": "symptoms"}
+{"query_id": "GARD:0001042:0001042-1", "question": "What is (are) Cerebellar degeneration ?", "subset": "GARD", "focus": "Cerebellar degeneration", "question_type": "information"}
+{"query_id": "GARD:0001059:0001059-1", "question": "What are the symptoms of Cerebral palsy ataxic ?", "subset": "GARD", "focus": "Cerebral palsy ataxic", "question_type": "symptoms"}
+{"query_id": "GARD:0001393:0001393-2", "question": "What are the symptoms of Coccygodynia ?", "subset": "GARD", "focus": "Coccygodynia", "question_type": "symptoms"}
+{"query_id": "GARD:0001416:0001416-3", "question": "What causes Cold urticaria ?", "subset": "GARD", "focus": "Cold urticaria", "question_type": "causes"}
+{"query_id": "GARD:0001540:0001540-1", "question": "What is (are) Congenital myasthenic syndrome ?", "subset": "GARD", "focus": "Congenital myasthenic syndrome", "question_type": "information"}
+{"query_id": "GARD:0001640:0001640-4", "question": "What are the treatments for Craniopharyngioma ?", "subset": "GARD", "focus": "Craniopharyngioma", "question_type": "treatment"}
+{"query_id": "GARD:0001664:0001664-4", "question": "Is Cri du chat syndrome inherited ?", "subset": "GARD", "focus": "Cri du chat syndrome", "question_type": "inheritance"}
+{"query_id": "GARD:0001903:0001903-1", "question": "What is (are) Dopa-responsive dystonia ?", "subset": "GARD", "focus": "Dopa-responsive dystonia", "question_type": "information"}
+{"query_id": "GARD:0001914:0001914-4", "question": "How to diagnose Down syndrome ?", "subset": "GARD", "focus": "Down syndrome", "question_type": "exams and tests"}
+{"query_id": "GARD:0001985:0001985-1", "question": "What are the symptoms of Dystelephalangy ?", "subset": "GARD", "focus": "Dystelephalangy", "question_type": "symptoms"}
+{"query_id": "GARD:0001997:0001997-1", "question": "What are the symptoms of Dystonia 3, torsion, X-linked ?", "subset": "GARD", "focus": "Dystonia 3, torsion, X-linked", "question_type": "symptoms"}
+{"query_id": "GARD:0002152:0002152-1", "question": "What is (are) Erdheim-Chester disease ?", "subset": "GARD", "focus": "Erdheim-Chester disease", "question_type": "information"}
+{"query_id": "GARD:0002259:0002259-1", "question": "What are the symptoms of Familial hyperaldosteronism type III ?", "subset": "GARD", "focus": "Familial hyperaldosteronism type III", "question_type": "symptoms"}

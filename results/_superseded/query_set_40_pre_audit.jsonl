@@ -1,0 +1,40 @@
+{"query_id": "CDC:0000255:0000255-2", "question": "How to prevent La Crosse Encephalitis ?", "subset": "CDC", "focus": "La Crosse Encephalitis", "question_type": "prevention"}
+{"query_id": "CancerGov:0000001_2:0000001_2-5", "question": "What is the outlook for Adult Acute Myeloid Leukemia ?", "subset": "CancerGov", "focus": "Adult Acute Myeloid Leukemia", "question_type": "outlook"}
+{"query_id": "GARD:0000481:0000481-2", "question": "What are the symptoms of Ascher Syndrome ?", "subset": "GARD", "focus": "Ascher Syndrome", "question_type": "symptoms"}
+{"query_id": "GARD:0000530:0000530-4", "question": "Is Autoimmune atrophic gastritis inherited ?", "subset": "GARD", "focus": "Autoimmune atrophic gastritis", "question_type": "inheritance"}
+{"query_id": "GARD:0000702:0000702-2", "question": "What are the symptoms of Beta ketothiolase deficiency ?", "subset": "GARD", "focus": "Beta ketothiolase deficiency", "question_type": "symptoms"}
+{"query_id": "GARD:0000857:0000857-2", "question": "What are the symptoms of Brooke-Spiegler syndrome ?", "subset": "GARD", "focus": "Brooke-Spiegler syndrome", "question_type": "symptoms"}
+{"query_id": "GARD:0002256:0002256-1", "question": "What is (are) Familial hemiplegic migraine type 2 ?", "subset": "GARD", "focus": "Familial hemiplegic migraine type 2", "question_type": "information"}
+{"query_id": "GARD:0002259:0002259-1", "question": "What are the symptoms of Familial hyperaldosteronism type III ?", "subset": "GARD", "focus": "Familial hyperaldosteronism type III", "question_type": "symptoms"}
+{"query_id": "GARD:0002431:0002431-3", "question": "How to diagnose Freeman Sheldon syndrome ?", "subset": "GARD", "focus": "Freeman Sheldon syndrome", "question_type": "exams and tests"}
+{"query_id": "GARD:0002561:0002561-2", "question": "What are the symptoms of Glass-Chapman-Hockley syndrome ?", "subset": "GARD", "focus": "Glass-Chapman-Hockley syndrome", "question_type": "symptoms"}
+{"query_id": "GARD:0002955:0002955-1", "question": "What are the symptoms of Hyde Forster Mccarthy Berry syndrome ?", "subset": "GARD", "focus": "Hyde Forster Mccarthy Berry syndrome", "question_type": "symptoms"}
+{"query_id": "GARD:0004155:0004155-5", "question": "What are the treatments for Mucopolysaccharidosis type I ?", "subset": "GARD", "focus": "Mucopolysaccharidosis type I", "question_type": "treatment"}
+{"query_id": "GARD:0004180:0004180-3", "question": "What causes Multifocal motor neuropathy ?", "subset": "GARD", "focus": "Multifocal motor neuropathy", "question_type": "causes"}
+{"query_id": "GARD:0006312:0006312-4", "question": "How to diagnose VACTERL association ?", "subset": "GARD", "focus": "VACTERL association", "question_type": "exams and tests"}
+{"query_id": "GHR:0000181:0000181-5", "question": "What are the treatments for chordoma ?", "subset": "GHR", "focus": "chordoma", "question_type": "treatment"}
+{"query_id": "GHR:0000457:0000457-2", "question": "How many people are affected by hereditary cerebral amyloid angiopathy ?", "subset": "GHR", "focus": "hereditary cerebral amyloid angiopathy", "question_type": "frequency"}
+{"query_id": "GHR:0000473:0000473-4", "question": "Is hereditary sensory and autonomic neuropathy type II inherited ?", "subset": "GHR", "focus": "hereditary sensory and autonomic neuropathy type II", "question_type": "inheritance"}
+{"query_id": "GHR:0000482:0000482-3", "question": "What are the genetic changes related to histidinemia ?", "subset": "GHR", "focus": "histidinemia", "question_type": "genetic changes"}
+{"query_id": "GHR:0000506:0000506-3", "question": "What are the genetic changes related to hypomagnesemia with secondary hypocalcemia ?", "subset": "GHR", "focus": "hypomagnesemia with secondary hypocalcemia", "question_type": "genetic changes"}
+{"query_id": "GHR:0000512:0000512-4", "question": "Is idiopathic pulmonary fibrosis inherited ?", "subset": "GHR", "focus": "idiopathic pulmonary fibrosis", "question_type": "inheritance"}
+{"query_id": "GHR:0000533:0000533-1", "question": "What is (are) isolated ectopia lentis ?", "subset": "GHR", "focus": "isolated ectopia lentis", "question_type": "information"}
+{"query_id": "GHR:0000552:0000552-2", "question": "How many people are affected by juvenile primary osteoporosis ?", "subset": "GHR", "focus": "juvenile primary osteoporosis", "question_type": "frequency"}
+{"query_id": "GHR:0000588:0000588-1", "question": "What is (are) Leber hereditary optic neuropathy ?", "subset": "GHR", "focus": "Leber hereditary optic neuropathy", "question_type": "information"}
+{"query_id": "GHR:0000599:0000599-1", "question": "What is (are) Leydig cell hypoplasia ?", "subset": "GHR", "focus": "Leydig cell hypoplasia", "question_type": "information"}
+{"query_id": "GHR:0000618:0000618-1", "question": "What is (are) mal de Meleda ?", "subset": "GHR", "focus": "mal de Meleda", "question_type": "information"}
+{"query_id": "GHR:0000741:0000741-5", "question": "What are the treatments for Northern epilepsy ?", "subset": "GHR", "focus": "Northern epilepsy", "question_type": "treatment"}
+{"query_id": "GHR:0000759:0000759-5", "question": "What are the treatments for osteopetrosis ?", "subset": "GHR", "focus": "osteopetrosis", "question_type": "treatment"}
+{"query_id": "GHR:0000762:0000762-3", "question": "What are the genetic changes related to otopalatodigital syndrome type 2 ?", "subset": "GHR", "focus": "otopalatodigital syndrome type 2", "question_type": "genetic changes"}
+{"query_id": "MPlusHealthTopics:0000092:0000092-1", "question": "Do you have information about Biopsy", "subset": "MPlusHealthTopics", "focus": "Biopsy", "question_type": "information"}
+{"query_id": "MPlusHealthTopics:0000180:0000180-1", "question": "Do you have information about Child Mental Health", "subset": "MPlusHealthTopics", "focus": "Child Mental Health", "question_type": "information"}
+{"query_id": "MPlusHealthTopics:0000951:0000951-1", "question": "Do you have information about Vital Signs", "subset": "MPlusHealthTopics", "focus": "Vital Signs", "question_type": "information"}
+{"query_id": "NHLBI:0000056:0000056-3", "question": "Who is at risk for Endocarditis? ?", "subset": "NHLBI", "focus": "Endocarditis", "question_type": "susceptibility"}
+{"query_id": "NHLBI:0000061:0000061-5", "question": "What are the symptoms of Heart Failure ?", "subset": "NHLBI", "focus": "Heart Failure", "question_type": "symptoms"}
+{"query_id": "NHLBI:0000061:0000061-7", "question": "What are the treatments for Heart Failure ?", "subset": "NHLBI", "focus": "Heart Failure", "question_type": "treatment"}
+{"query_id": "NHLBI:0000067:0000067-1", "question": "What is (are) Hemochromatosis ?", "subset": "NHLBI", "focus": "Hemochromatosis", "question_type": "information"}
+{"query_id": "NIDDK:0000008:0000008-3", "question": "What causes Hyperthyroidism ?", "subset": "NIDDK", "focus": "Hyperthyroidism", "question_type": "causes"}
+{"query_id": "NIDDK:0000099:0000099-9", "question": "What is (are) Fecal Incontinence ?", "subset": "NIDDK", "focus": "Fecal Incontinence", "question_type": "information"}
+{"query_id": "NIDDK:0000123:0000123-7", "question": "What are the treatments for Viral Gastroenteritis ?", "subset": "NIDDK", "focus": "Viral Gastroenteritis", "question_type": "treatment"}
+{"query_id": "NINDS:0000040:0000040-4", "question": "what research (or clinical trials) is being done for Myotonia Congenita ?", "subset": "NINDS", "focus": "Myotonia Congenita", "question_type": "research"}
+{"query_id": "SeniorHealth:0000004:0000004-11", "question": "What is (are) Alzheimer's Disease ?", "subset": "SeniorHealth", "focus": "Alzheimer's Disease", "question_type": "information"}

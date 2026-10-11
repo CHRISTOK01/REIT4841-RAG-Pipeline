@@ -1,9 +1,12 @@
 """Build three knowledge-base variants from one base MedQuAD corpus:
 
 - `curated`: a quality-filtered, stratified sample of the corpus.
-- `mixed`:   curated + a configurable ratio of topically-irrelevant "distractor"
-             documents drawn from the rest of the corpus, simulating a diluted/
-             noisy knowledge base.
+- `mixed`:   curated + a configurable ratio of "distractor" documents drawn from
+             the rest of the corpus, simulating a diluted/noisy knowledge base.
+             Distractors are restricted to topics (focuses) that do not occur in
+             curated at all, and to answers that do not duplicate a curated
+             answer, so a distractor cannot be a second correct source for a
+             query (see `eligible_noise_docs`).
 - `reduced`: curated with a configurable fraction of topics (focuses) removed
              entirely, simulating deliberate coverage gaps.
 
@@ -23,9 +26,21 @@ from pathlib import Path
 
 import yaml
 
-from data.chunking import chunk_documents, save_chunks_jsonl
+from data.chunking import chunk_document, chunk_documents, save_chunks_jsonl
 from data.ingest_medquad import load_source_documents_jsonl, save_source_documents_jsonl
 from data.schemas import Chunk, ChunkingConfig, SourceDocument
+
+
+# Bumped whenever the construction rules change, so indexes/artifacts built under
+# older rules can never be picked up by `config_hash`.
+#   1: mixed noise drawn from all leftover documents (could share a curated topic)
+#   2: mixed noise restricted to topics absent from curated, with no chunk that
+#      repeats a curated chunk verbatim and no duplicate answers
+KB_BUILD_VERSION = 2
+
+
+def normalize_topic(focus: str) -> str:
+    return " ".join(focus.lower().split())
 
 
 @dataclass(frozen=True)
@@ -48,7 +63,11 @@ class KBVariantConfig:
 
 
 def config_hash(kb_config: KBVariantConfig, chunking_config: ChunkingConfig) -> str:
-    payload = {"kb_variant": asdict(kb_config), "chunking": asdict(chunking_config)}
+    payload = {
+        "kb_variant": asdict(kb_config),
+        "chunking": asdict(chunking_config),
+        "build_version": KB_BUILD_VERSION,
+    }
     blob = json.dumps(payload, sort_keys=True).encode("utf-8")
     return hashlib.sha256(blob).hexdigest()[:12]
 
@@ -102,14 +121,46 @@ def sample_base_pool(
     return _stratified_sample(quality_pool, config.base_corpus_size, rng)
 
 
+def eligible_noise_docs(
+    curated_docs: list[SourceDocument],
+    distractor_pool: list[SourceDocument],
+    chunking_config: ChunkingConfig,
+) -> list[SourceDocument]:
+    """Leftover documents that are safe to inject as noise:
+    - their topic does not occur anywhere in curated;
+    - none of their chunks repeats a curated chunk word for word (MedQuAD
+      reuses whole answers and boilerplate passages across documents, and a
+      verbatim copy of a relevant passage is not noise);
+    - no two of them share an answer."""
+    curated_topics = {normalize_topic(d.focus) for d in curated_docs}
+    curated_chunk_texts = {c.text for c in chunk_documents(curated_docs, chunking_config)}
+    seen_answers: set[str] = set()
+    eligible: list[SourceDocument] = []
+    for doc in sorted(distractor_pool, key=lambda d: d.doc_id):
+        if normalize_topic(doc.focus) in curated_topics or doc.answer in seen_answers:
+            continue
+        if any(c.text in curated_chunk_texts for c in chunk_document(doc, chunking_config)):
+            continue
+        seen_answers.add(doc.answer)
+        eligible.append(doc)
+    return eligible
+
+
 def build_mixed(
     curated_docs: list[SourceDocument],
     distractor_pool: list[SourceDocument],
     config: KBVariantConfig,
+    chunking_config: ChunkingConfig,
 ) -> list[SourceDocument]:
     rng = random.Random(config.seed + 1)
-    n_noise = min(round(len(curated_docs) * config.mixed_noise_ratio), len(distractor_pool))
-    pool = sorted(distractor_pool, key=lambda d: d.doc_id)
+    n_noise = round(len(curated_docs) * config.mixed_noise_ratio)
+    pool = eligible_noise_docs(curated_docs, distractor_pool, chunking_config)
+    if n_noise > len(pool):
+        # Never silently build a `mixed` KB with a lower ratio than configured.
+        raise ValueError(
+            f"mixed_noise_ratio={config.mixed_noise_ratio} needs {n_noise} off-topic noise "
+            f"documents but only {len(pool)} are eligible"
+        )
     rng.shuffle(pool)
     return curated_docs + pool[:n_noise]
 
@@ -120,11 +171,11 @@ def build_reduced(
     """Drop a fraction of topics (focuses) entirely from the curated set.
     Returns (reduced_docs, dropped_topics)."""
     rng = random.Random(config.seed + 2)
-    topics = sorted({d.focus for d in curated_docs})
+    topics = sorted({normalize_topic(d.focus) for d in curated_docs})
     n_drop = round(len(topics) * config.reduced_drop_topic_fraction)
     rng.shuffle(topics)
     dropped = set(topics[:n_drop])
-    reduced = [d for d in curated_docs if d.focus not in dropped]
+    reduced = [d for d in curated_docs if normalize_topic(d.focus) not in dropped]
     return reduced, sorted(dropped)
 
 
@@ -142,7 +193,7 @@ def build_all_variants(
     chunking_config: ChunkingConfig,
 ) -> dict[str, KBVariant]:
     curated_docs, distractor_pool = sample_base_pool(all_docs, kb_config)
-    mixed_docs = build_mixed(curated_docs, distractor_pool, kb_config)
+    mixed_docs = build_mixed(curated_docs, distractor_pool, kb_config, chunking_config)
     reduced_docs, dropped_topics = build_reduced(curated_docs, kb_config)
 
     return {
@@ -169,6 +220,7 @@ def save_variant(variant: KBVariant, out_dir: Path, manifest_extra: dict) -> Non
         "variant": variant.name,
         "num_documents": len(variant.documents),
         "num_chunks": len(variant.chunks),
+        "chunks_sha256": hashlib.sha256((variant_dir / "chunks.jsonl").read_bytes()).hexdigest(),
         "dropped_topics": variant.dropped_topics,
         **manifest_extra,
     }
@@ -192,9 +244,10 @@ def main() -> None:
 
     manifest_extra = {
         "config_hash": chash,
+        "build_version": KB_BUILD_VERSION,
         "kb_variant_config": asdict(kb_config),
         "chunking_config": asdict(chunking_config),
-        "source_corpus": str(args.corpus),
+        "source_corpus": args.corpus.as_posix(),
         "source_corpus_size": len(all_docs),
     }
 

@@ -28,3 +28,6 @@ results/raw/
 !datasets/.gitkeep
 !artifacts/.gitkeep
 !results/.gitkeep
+
+# Test coverage data
+.coverage

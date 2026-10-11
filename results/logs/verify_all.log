@@ -1,0 +1,14 @@
+[1/3] test suite with coverage ...
+[2/3] results validation ...
+[3/3] mutation testing skipped (pass --with-mutation)
+
+==============================================================================
+VERIFY  code 271788e+dirty  source tree 50c0c80bfd531433  (459s)
+==============================================================================
+PASS  tests pass                     795 passed, 26 skipped in 435.42s (0:07:15)
+PASS  no real-data test was skipped  only the paid real-API tests were skipped (run them with --run-api)
+PASS  coverage measured              line 90.1% (1910/2120), line+branch combined 89%, 546 branches of which 35 partially covered; per-file table in reports/validation/coverage.txt
+PASS  results log validates          Wrote reports\validation\data_validation.md: all data checks pass
+==============================================================================
+ALL CHECKS PASSED
+exit=0

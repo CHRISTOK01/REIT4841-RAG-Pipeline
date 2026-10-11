@@ -3,6 +3,10 @@
 Both chunk and query embeddings flow through this cache so a given piece of
 text is only ever sent to the OpenAI embeddings API once, across all runs --
 this matters for API cost and for exact reproducibility of a sweep.
+
+A cached vector is validated every time it is read (whole float32s, finite,
+same dimension as its neighbours). A damaged row raises
+`CorruptEmbeddingError` rather than being fed into the index.
 """
 
 from __future__ import annotations
@@ -17,6 +21,20 @@ import numpy as np
 EmbedFn = Callable[[Sequence[str]], Sequence[Sequence[float]]]
 
 _SQLITE_MAX_VARIABLES_PER_QUERY = 900  # stay under SQLite's default ~999 parameter limit
+_FLOAT32_BYTES = 4
+
+
+class CorruptEmbeddingError(RuntimeError):
+    """A cached or freshly returned embedding is unusable (truncated, non-finite,
+    wrong dimension, or the wrong number of vectors came back)."""
+
+
+def _validated(vector: np.ndarray, source: str) -> np.ndarray:
+    if vector.ndim != 1 or vector.size == 0:
+        raise CorruptEmbeddingError(f"{source}: embedding is empty or not a flat vector")
+    if not np.all(np.isfinite(vector)):
+        raise CorruptEmbeddingError(f"{source}: embedding contains NaN/inf")
+    return vector
 
 
 class EmbeddingCache:
@@ -48,10 +66,16 @@ class EmbeddingCache:
                 f"SELECT key, vector FROM embeddings WHERE key IN ({placeholders})", batch
             ).fetchall()
             for key, blob in rows:
-                found[key] = np.frombuffer(blob, dtype=np.float32)
+                if len(blob) % _FLOAT32_BYTES != 0:
+                    raise CorruptEmbeddingError(
+                        f"{self.path}: cached embedding {key[:12]} is truncated ({len(blob)} bytes)"
+                    )
+                found[key] = _validated(np.frombuffer(blob, dtype=np.float32), f"{self.path} row {key[:12]}")
         return found
 
     def put_many(self, model: str, texts: Sequence[str], vectors: Sequence[np.ndarray]) -> None:
+        if len(texts) != len(vectors):
+            raise CorruptEmbeddingError(f"{len(texts)} texts but {len(vectors)} vectors to cache")
         rows = [
             (self.cache_key(model, t), model, np.asarray(v, dtype=np.float32).tobytes())
             for t, v in zip(texts, vectors)
@@ -69,16 +93,28 @@ def get_or_compute_embeddings(
     cache: EmbeddingCache, model: str, texts: Sequence[str], embed_fn: EmbedFn
 ) -> np.ndarray:
     """Returns an (len(texts), dim) array, fetching from cache and only calling
-    embed_fn for texts not already cached."""
+    embed_fn for texts not already cached (each distinct text at most once)."""
     keys = [cache.cache_key(model, t) for t in texts]
     cached = cache.get_many(model, texts)
 
-    missing_positions = [i for i, key in enumerate(keys) if key not in cached]
-    if missing_positions:
-        missing_texts = [texts[i] for i in missing_positions]
+    missing: dict[str, str] = {}  # key -> text, first occurrence only
+    for key, text in zip(keys, texts):
+        if key not in cached and key not in missing:
+            missing[key] = text
+    if missing:
+        missing_texts = list(missing.values())
         new_vectors = embed_fn(missing_texts)
-        cache.put_many(model, missing_texts, new_vectors)
-        for i, vector in zip(missing_positions, new_vectors):
-            cached[keys[i]] = np.asarray(vector, dtype=np.float32)
+        if len(new_vectors) != len(missing_texts):
+            raise CorruptEmbeddingError(
+                f"embed_fn returned {len(new_vectors)} vectors for {len(missing_texts)} texts"
+            )
+        new_arrays = [
+            _validated(np.asarray(v, dtype=np.float32), "embed_fn result") for v in new_vectors
+        ]
+        cache.put_many(model, missing_texts, new_arrays)
+        cached.update(zip(missing.keys(), new_arrays))
 
+    dims = {cached[key].shape[0] for key in keys}
+    if len(dims) > 1:
+        raise CorruptEmbeddingError(f"embeddings for model {model!r} have mixed dimensions: {sorted(dims)}")
     return np.stack([cached[key] for key in keys])

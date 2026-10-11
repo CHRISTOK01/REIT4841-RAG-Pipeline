@@ -16,6 +16,8 @@ from collections import defaultdict
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+import yaml
+
 from data.ingest_medquad import load_source_documents_jsonl
 from data.schemas import SourceDocument
 
@@ -32,7 +34,7 @@ class QueryItem:
 @dataclass(frozen=True)
 class QuerySetConfig:
     seed: int = 42
-    num_queries: int = 40
+    num_queries: int = 150
 
     def __post_init__(self) -> None:
         if self.num_queries <= 0:
@@ -82,7 +84,7 @@ def sample_query_set(
 
 def save_query_set_jsonl(queries: list[QueryItem], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
+    with path.open("w", encoding="utf-8", newline="\n") as f:
         for q in queries:
             f.write(json.dumps(asdict(q), ensure_ascii=False) + "\n")
 
@@ -104,13 +106,19 @@ def main() -> None:
     parser.add_argument(
         "--curated-docs", type=Path, default=Path("datasets/processed/kb_curated/documents.jsonl")
     )
-    parser.add_argument("--num-queries", type=int, default=40)
-    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--config", type=Path, default=Path("configs/query_set.yaml"))
+    parser.add_argument("--num-queries", type=int, default=None, help="override the config value")
+    parser.add_argument("--seed", type=int, default=None, help="override the config value")
     parser.add_argument("--out", type=Path, default=Path("datasets/processed/query_set.jsonl"))
     args = parser.parse_args()
 
     curated_docs = load_source_documents_jsonl(args.curated_docs)
-    config = QuerySetConfig(seed=args.seed, num_queries=args.num_queries)
+    raw = yaml.safe_load(args.config.read_text(encoding="utf-8"))["query_set"]
+    if args.num_queries is not None:
+        raw["num_queries"] = args.num_queries
+    if args.seed is not None:
+        raw["seed"] = args.seed
+    config = QuerySetConfig(**raw)
     queries = sample_query_set(curated_docs, config)
     save_query_set_jsonl(queries, args.out)
 

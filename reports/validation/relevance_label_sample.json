@@ -1,0 +1,581 @@
+{
+  "seed": 30,
+  "population": {
+    "labelled_relevant_pairs": 330,
+    "retrieved_but_unlabelled_pairs": 979
+  },
+  "labelled_relevant": [
+    {
+      "query_id": "NHLBI:0000067:0000067-1",
+      "question": "What is (are) Hemochromatosis ?",
+      "chunk_id": "NHLBI:0000067:0000067-1#4",
+      "chunk_topic": "Hemochromatosis",
+      "chunk_question_type": "information",
+      "chunk_text": "delay, or sometimes reverse complications of the disease. Treatment also may lead to better quality of life. For people who are diagnosed and treated early, a normal lifespan is possible. If left untreated, hemochromatosis can lead to severe organ damage and even death.",
+      "n_chunks_in_answer": 5
+    },
+    {
+      "query_id": "GARD:0006133:0006133-2",
+      "question": "What are the symptoms of Townes-Brocks syndrome ?",
+      "chunk_id": "GARD:0006133:0006133-2#3",
+      "chunk_topic": "Townes-Brocks syndrome",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "7.5% Cranial nerve paralysis 7.5% Displacement of the external urethral meatus 7.5% Epibulbar dermoid 7.5% Facial asymmetry 7.5% Hypoplasia of penis 7.5% Hypothyroidism 7.5% Iris coloboma 7.5% Lower limb asymmetry 7.5% Multicystic kidney dysplasia 7.5% Patent ductus arteriosus 7.5% Preaxial foot polydactyly 7.5% Renal dysplasia 7.5% Renal hypoplasia 7.5% Short stature 7.5% Split foot 7.5% Strabismus 7.5% Tetralogy of Fallot 7.5% Toe syndactyly 7.5% Ulnar deviation of finger 7.5% Vesicoureteral reflux 7.5% Visual impairment 7.5% Wide mouth 7.5% Duane anomaly 5% 2-3 toe syndactyly - 3-4 finger syndactyly - 3-4 toe syndactyly - Anal stenosis - Aplasia/Hypoplasia of the 3rd toe - Autosomal dominant inheritance - Bifid uterus - Broad thumb - Duodenal atresia - Gastroesophageal reflux - Hypospadias -",
+      "n_chunks_in_answer": 7
+    },
+    {
+      "query_id": "SeniorHealth:0000040:0000040-3",
+      "question": "What are the symptoms of Leukemia ?",
+      "chunk_id": "SeniorHealth:0000040:0000040-3#2",
+      "chunk_topic": "Leukemia",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "unable to fight infection. Therefore, patients may develop frequent fevers or infections. A shortage of red blood cells, called anemia, can cause a person to feel tired. Not having enough blood platelets may cause a person to bleed and bruise easily. Some symptoms depend on where leukemia cells collect in the body. Leukemia cells can collect in many different tissues and organs, such as the digestive tract, kidneys, lungs, lymph nodes, or other parts of the body, including the eyes, brain, and testicles. Other Common Symptoms Other common symptoms of leukemia include headache, weight loss, pain in the bones or joints, swelling or discomfort in the abdomen (from an enlarged spleen), and swollen lymph nodes, especially in the neck or",
+      "n_chunks_in_answer": 7
+    },
+    {
+      "query_id": "CancerGov:0000024_6:0000024_6-6",
+      "question": "What are the stages of Oropharyngeal Cancer ?",
+      "chunk_id": "CancerGov:0000024_6:0000024_6-6#3",
+      "chunk_topic": "Oropharyngeal Cancer",
+      "chunk_question_type": "stages",
+      "chunk_text": "began (the primary tumor) and travel through the lymph system or blood. - Lymph system. The cancer gets into the lymph system, travels through the lymph vessels, and forms a tumor (metastatic tumor) in another part of the body. - Blood. The cancer gets into the blood, travels through the blood vessels, and forms a tumor (metastatic tumor) in another part of the body. The metastatic tumor is the same type of cancer as the primary tumor. For example, if oropharyngeal cancer spreads to the lung, the cancer cells in the lung are actually oropharyngeal cancer cells. The disease is metastatic oropharyngeal cancer, not lung cancer. The following stages are used for oropharyngeal cancer: Stage 0 (Carcinoma in Situ) In",
+      "n_chunks_in_answer": 9
+    },
+    {
+      "query_id": "SeniorHealth:0000042:0000042-3",
+      "question": "What are the symptoms of Low Vision ?",
+      "chunk_id": "SeniorHealth:0000042:0000042-3#1",
+      "chunk_topic": "Low Vision",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "such as reading, cooking, sewing, fixing things around the house, or picking out and matching the color of your clothes? doing things at work or home because lights seem dimmer than they used to? reading street and bus signs or the names of stores? Early Diagnosis Is Important Vision changes like these could be early warning signs of eye disease. People over age 60 should have an eye exam through dilated pupils at least once a year. Usually, the earlier your problem is diagnosed, the better your chances of undergoing successful treatment and keeping your remaining vision. Regular dilated eye exams should be part of your routine health care. However, if you think your vision has recently changed, you should",
+      "n_chunks_in_answer": 3
+    },
+    {
+      "query_id": "GARD:0002912:0002912-1",
+      "question": "What are the symptoms of Holzgreve syndrome ?",
+      "chunk_id": "GARD:0002912:0002912-1#2",
+      "chunk_topic": "Holzgreve syndrome",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "database. The frequency of a sign or symptom is usually listed as a rough estimate of the percentage of patients who have that feature. The frequency may also be listed as a fraction. The first number of the fraction is how many people had the symptom, and the second number is the total number of people who were examined in one study. For example, a frequency of 25/25 means that in a study of 25 people all patients were found to have that symptom. Because these frequencies are based on a specific study, the fractions may be different if another group of patients are examined. Sometimes, no information on frequency is available. In these cases, the sign or symptom may",
+      "n_chunks_in_answer": 4
+    },
+    {
+      "query_id": "GARD:0004611:0004611-1",
+      "question": "What is (are) Osteogenesis imperfecta ?",
+      "chunk_id": "GARD:0004611:0004611-1#0",
+      "chunk_topic": "Osteogenesis imperfecta",
+      "chunk_question_type": "information",
+      "chunk_text": "Osteogenesis imperfecta (OI) is a group of genetic disorders that mainly affect the bones. People with this condition have bones that break easily, often from little or no trauma. Severity varies among affected people. Multiple fractures are common, and in severe cases, can even occur before birth. Milder cases may involve only a few fractures over a person's lifetime. People with OI also have dental problems (dentinogenesis imperfecta) and hearing loss in adulthood. Other features may include muscle weakness, loose joints, and skeletal malformations. There are various recognized forms of OI which are distinguished by their features and genetic causes. Depending on the genetic cause, OI may be inherited in an autosomal dominant (more commonly) or autosomal recessive manner. Treatment",
+      "n_chunks_in_answer": 2
+    },
+    {
+      "query_id": "CancerGov:0000024_7:0000024_7-7",
+      "question": "What are the treatments for Paranasal Sinus and Nasal Cavity Cancer ?",
+      "chunk_id": "CancerGov:0000024_7:0000024_7-7#11",
+      "chunk_topic": "Paranasal Sinus and Nasal Cavity Cancer",
+      "chunk_question_type": "treatment",
+      "chunk_text": "or stop treatment may be based on the results of these tests. Some of the tests will continue to be done from time to time after treatment has ended. The results of these tests can show if your condition has changed or if the cancer has recurred (come back). These tests are sometimes called follow-up tests or check-ups. Treatment Options by Stage Stage I Paranasal Sinus and Nasal Cavity Cancer Treatment of stage I paranasal sinus and nasal cavity cancer depends on where cancer is found in the paranasal sinuses and nasal cavity: - If cancer is in the maxillary sinus, treatment is usually surgery with or without radiation therapy. - If cancer is in the ethmoid sinus, treatment is",
+      "n_chunks_in_answer": 24
+    },
+    {
+      "query_id": "GHR:0000688:0000688-5",
+      "question": "What are the treatments for multiple endocrine neoplasia ?",
+      "chunk_id": "GHR:0000688:0000688-5#1",
+      "chunk_topic": "multiple endocrine neoplasia",
+      "chunk_question_type": "treatment",
+      "chunk_text": "MedlinePlus Encyclopedia: Medullary Carcinoma of Thyroid - MedlinePlus Encyclopedia: Multiple Endocrine Neoplasia (MEN) I - MedlinePlus Encyclopedia: Multiple Endocrine Neoplasia (MEN) II - MedlinePlus Encyclopedia: Pancreatic Islet Cell Tumor - MedlinePlus Encyclopedia: Pheochromocytoma - MedlinePlus Encyclopedia: Pituitary Tumor - National Cancer Institute: Genetic Testing for Hereditary Cancer Syndromes - New York Thyroid Center: Medullary Thyroid Cancer These resources from MedlinePlus offer information about the diagnosis and management of various health conditions: - Diagnostic Tests - Drug Therapy - Surgery and Rehabilitation - Genetic Counseling - Palliative Care",
+      "n_chunks_in_answer": 2
+    },
+    {
+      "query_id": "GHR:0000552:0000552-2",
+      "question": "How many people are affected by juvenile primary osteoporosis ?",
+      "chunk_id": "GHR:0000552:0000552-2#0",
+      "chunk_topic": "juvenile primary osteoporosis",
+      "chunk_question_type": "frequency",
+      "chunk_text": "The prevalence of juvenile primary osteoporosis is unknown. Nearly 1 in 10 adults over age 50 have osteoporosis, but the condition is uncommon in children. Osteoporosis can occur at a young age as a feature of other conditions but rarely occurs without other signs and symptoms (primary osteoporosis).",
+      "n_chunks_in_answer": 1
+    },
+    {
+      "query_id": "SeniorHealth:0000063:0000063-4",
+      "question": "How to diagnose Skin Cancer ?",
+      "chunk_id": "SeniorHealth:0000063:0000063-4#5",
+      "chunk_topic": "Skin Cancer",
+      "chunk_question_type": "exams and tests",
+      "chunk_text": "spread, the doctor might also use computed axial tomography (CAT scan or CT scan), or magnetic resonance imaging (MRI) to try to locate tumors in other parts of the body.",
+      "n_chunks_in_answer": 6
+    },
+    {
+      "query_id": "GARD:0000941:0000941-1",
+      "question": "What are the symptoms of Cardiac valvular dysplasia, X-linked ?",
+      "chunk_id": "GARD:0000941:0000941-1#2",
+      "chunk_topic": "Cardiac valvular dysplasia, X-linked",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "who were examined in one study. For example, a frequency of 25/25 means that in a study of 25 people all patients were found to have that symptom. Because these frequencies are based on a specific study, the fractions may be different if another group of patients are examined. Sometimes, no information on frequency is available. In these cases, the sign or symptom may be rare or common.",
+      "n_chunks_in_answer": 3
+    },
+    {
+      "query_id": "CancerGov:0000024_7:0000024_7-7",
+      "question": "What are the treatments for Paranasal Sinus and Nasal Cavity Cancer ?",
+      "chunk_id": "CancerGov:0000024_7:0000024_7-7#6",
+      "chunk_topic": "Paranasal Sinus and Nasal Cavity Cancer",
+      "chunk_question_type": "treatment",
+      "chunk_text": "The way the radiation therapy is given depends on the type and stage of the cancer being treated. External and internal radiation therapy are used to treat paranasal sinus and nasal cavity cancer. External radiation therapy to the thyroid or the pituitary gland may change the way the thyroid gland works. The thyroid hormone levels in the blood may be tested before and after treatment. Chemotherapy Chemotherapy is a cancer treatment that uses drugs to stop the growth of cancer cells, either by killing the cells or by stopping them from dividing. When chemotherapy is taken by mouth or injected into a vein or muscle, the drugs enter the bloodstream and can reach cancer cells throughout the body (systemic chemotherapy).",
+      "n_chunks_in_answer": 24
+    },
+    {
+      "query_id": "GHR:0000929:0000929-1",
+      "question": "What is (are) spastic paraplegia type 3A ?",
+      "chunk_id": "GHR:0000929:0000929-1#0",
+      "chunk_topic": "spastic paraplegia type 3A",
+      "chunk_question_type": "information",
+      "chunk_text": "Spastic paraplegia type 3A is one of a group of genetic disorders known as hereditary spastic paraplegias. These disorders are characterized by muscle stiffness (spasticity) and weakness in the lower limbs (paraplegia). Hereditary spastic paraplegias are often divided into two types: pure and complex. The pure types involve only the lower limbs, while the complex types also involve other areas of the body; additional features can include changes in vision, changes in intellectual functioning, difficulty walking, and disturbances in nerve function (neuropathy). Spastic paraplegia type 3A is usually a pure hereditary spastic paraplegia, although a few complex cases have been reported. In addition to spasticity and weakness, which typically affect both legs equally, people with spastic paraplegia type 3A can",
+      "n_chunks_in_answer": 2
+    },
+    {
+      "query_id": "CDC:0000439:0000439-16",
+      "question": "how can y. enterocolitica infections be treated for Yersinia ?",
+      "chunk_id": "CDC:0000439:0000439-16#0",
+      "chunk_topic": "Yersinia",
+      "chunk_question_type": "treatment",
+      "chunk_text": "Uncomplicated cases of diarrhea due to Y. enterocolitica usually resolve on their own without antibiotic treatment. However, in more severe or complicated infections, antibiotics such as aminoglycosides, doxycycline, trimethoprim-sulfamethoxazole, or fluoroquinolones may be useful.",
+      "n_chunks_in_answer": 1
+    },
+    {
+      "query_id": "NHLBI:0000009:0000009-3",
+      "question": "What causes Asbestos-Related Lung Diseases ?",
+      "chunk_id": "NHLBI:0000009:0000009-3#1",
+      "chunk_topic": "Asbestos-Related Lung Diseases",
+      "chunk_question_type": "causes",
+      "chunk_text": "contain asbestos isn't a danger, as long as the asbestos is enclosed. This prevents the fibers from getting into the air.",
+      "n_chunks_in_answer": 2
+    },
+    {
+      "query_id": "GARD:0004205:0004205-1",
+      "question": "What is (are) Multiple sclerosis ?",
+      "chunk_id": "GARD:0004205:0004205-1#0",
+      "chunk_topic": "Multiple sclerosis",
+      "chunk_question_type": "information",
+      "chunk_text": "Multiple sclerosis (MS) is a degenerative disorder that affects the central nervous system, specifically the brain and the spinal cord. The disorder is characterized by destruction of the myelin, the fatty tissue that surrounds and protects the nerve fibers and promotes the transmission of nerve impulses, and damage to nerve cells. The symptoms vary widely from person to person, and may include sensory disturbances in the limbs, problems with muscle control, tremors, muscle stiffness (spasticity), exaggerated reflexes (hyperreflexia), weakness, difficulty walking, poor bladder control, and vision problems. Most patients have periods during which they have symptoms (clinical attacks). The clinical attacks are typically followed by periods without any symptoms (remission). After several years, the symptoms worsen continuously. Multiple sclerosis is",
+      "n_chunks_in_answer": 2
+    },
+    {
+      "query_id": "CancerGov:0000024_6:0000024_6-6",
+      "question": "What are the stages of Oropharyngeal Cancer ?",
+      "chunk_id": "CancerGov:0000024_6:0000024_6-6#1",
+      "chunk_topic": "Oropharyngeal Cancer",
+      "chunk_question_type": "stages",
+      "chunk_text": "the oropharynx or to other parts of the body. The process used to find out if cancer has spread within the oropharynx or to other parts of the body is called staging. The information gathered from the staging process determines the stage of the disease. It is important to know the stage in order to plan treatment. The results of some of the tests used to diagnose oropharyngeal cancer are often used to stage the disease. There are three ways that cancer spreads in the body. Cancer can spread through tissue, the lymph system, and the blood: - Tissue. The cancer spreads from where it began by growing into nearby areas. - Lymph system. The cancer spreads from where it",
+      "n_chunks_in_answer": 9
+    },
+    {
+      "query_id": "CancerGov:0000024_7:0000024_7-7",
+      "question": "What are the treatments for Paranasal Sinus and Nasal Cavity Cancer ?",
+      "chunk_id": "CancerGov:0000024_7:0000024_7-7#23",
+      "chunk_topic": "Paranasal Sinus and Nasal Cavity Cancer",
+      "chunk_question_type": "treatment",
+      "chunk_text": "after surgery or other cancer treatment. - A clinical trial of chemotherapy and radiation therapy. Check the list of NCI-supported cancer clinical trials that are now accepting patients with stage IV paranasal sinus and nasal cavity cancer. For more specific results, refine the search by using other search features, such as the location of the trial, the type of treatment, or the name of the drug. Talk with your doctor about clinical trials that may be right for you. General information about clinical trials is available from the NCI website.",
+      "n_chunks_in_answer": 24
+    },
+    {
+      "query_id": "GARD:0001903:0001903-1",
+      "question": "What is (are) Dopa-responsive dystonia ?",
+      "chunk_id": "GARD:0001903:0001903-1#1",
+      "chunk_topic": "Dopa-responsive dystonia",
+      "chunk_question_type": "information",
+      "chunk_text": "30. DRD may be caused by mutations in the GCH1, TH or SPR genes, or the cause may be unknown. Depending on the genetic cause, DRD may be inherited in an autosomal dominant (most commonly) or autosomal recessive manner. This form of dystonia is called 'dopa-responsive' dystonia because the symptoms typically improve during treatment with levodopa and carbidopa.",
+      "n_chunks_in_answer": 2
+    },
+    {
+      "query_id": "NINDS:0000237:0000237-2",
+      "question": "What are the treatments for Post-Polio Syndrome ?",
+      "chunk_id": "NINDS:0000237:0000237-2#0",
+      "chunk_topic": "Post-Polio Syndrome",
+      "chunk_question_type": "treatment",
+      "chunk_text": "Presently, no prevention has been found that can stop deterioration or reverse the deficits caused by the syndrome A number of controlled studies have demonstrated that nonfatiguing exercises may improve muscle strength and reduce tiredness. Doctors recommend that polio survivors follow standard healthy lifestyle practices: consuming a well-balanced diet, exercising judiciously (preferably under the supervision of an experienced health professional), and visiting a doctor regularly. There has been much debate about whether to encourage or discourage exercise for polio survivors or individuals who already have PPS. A commonsense approach, in which people use individual tolerance as their limit, is currently recommended. Preliminary studies indicate that intravenous immunoglobulin therapy may reduce pain, increase quality of life, and improve strength modestly.",
+      "n_chunks_in_answer": 1
+    },
+    {
+      "query_id": "NHLBI:0000061:0000061-5",
+      "question": "What are the symptoms of Heart Failure ?",
+      "chunk_id": "NHLBI:0000061:0000061-5#1",
+      "chunk_topic": "Heart Failure",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "failure also causes weight gain, frequent urination, and a cough that's worse at night and when you're lying down. This cough may be a sign of acute pulmonary edema (e-DE-ma). This is a condition in which too much fluid builds up in your lungs. The condition requires emergency treatment. Heart Failure Signs and Symptoms",
+      "n_chunks_in_answer": 2
+    },
+    {
+      "query_id": "GHR:0000698:0000698-1",
+      "question": "What is (are) mycosis fungoides ?",
+      "chunk_id": "GHR:0000698:0000698-1#1",
+      "chunk_topic": "mycosis fungoides",
+      "chunk_question_type": "information",
+      "chunk_text": "scaly, pink or red areas on the skin that can be itchy. Cancerous T cells, which cause the formation of patches, are found in these lesions. The skin cells themselves are not cancerous; the skin problems result when cancerous T cells move from the blood into the skin. Patches are most commonly found on the lower abdomen, upper thighs, buttocks, and breasts. They can disappear and reappear or remain stable over time. In most affected individuals, patches progress to plaques, the next stage of mycosis fungoides. Plaques are raised lesions that are usually reddish, purplish, or brownish in color and itchy. Plaques commonly occur in the same body regions as patches. While some plaques arise from patches, others develop on",
+      "n_chunks_in_answer": 4
+    },
+    {
+      "query_id": "GHR:0000423:0000423-1",
+      "question": "What is (are) glycogen storage disease type III ?",
+      "chunk_id": "GHR:0000423:0000423-1#1",
+      "chunk_topic": "glycogen storage disease type III",
+      "chunk_question_type": "information",
+      "chunk_text": "types of GSDIII that affect the same tissues. GSD types IIIa and IIIb are the most common forms of this condition. Beginning in infancy, individuals with any type of GSDIII may have low blood sugar (hypoglycemia), excess amounts of fats in the blood (hyperlipidemia), and elevated blood levels of liver enzymes. As they get older, children with this condition typically develop an enlarged liver (hepatomegaly). Liver size usually returns to normal during adolescence, but some affected individuals develop chronic liver disease (cirrhosis) and liver failure later in life. People with GSDIII often have slow growth because of their liver problems, which can lead to short stature. In a small percentage of people with GSDIII, noncancerous (benign) tumors called adenomas may",
+      "n_chunks_in_answer": 3
+    },
+    {
+      "query_id": "NHLBI:0000067:0000067-1",
+      "question": "What is (are) Hemochromatosis ?",
+      "chunk_id": "NHLBI:0000067:0000067-1#2",
+      "chunk_topic": "Hemochromatosis",
+      "chunk_question_type": "information",
+      "chunk_text": "and symptoms of the disease. The two faulty genes cause your body to absorb more iron than usual from the foods you eat. Hemochromatosis is one of the most common genetic disorders in the United States. However, not everyone who has hemochromatosis has signs or symptoms of the disease. Estimates of how many people develop signs and symptoms vary greatly. Some estimates suggest that as many as half of all people who have the disease don't have signs or symptoms. The severity of hemochromatosis also varies. Some people don't have complications, even with high levels of iron in their bodies. Others have severe complications or die from the disease. Certain factors can affect the severity of the disease. For example,",
+      "n_chunks_in_answer": 5
+    },
+    {
+      "query_id": "CancerGov:0000024_7:0000024_7-7",
+      "question": "What are the treatments for Paranasal Sinus and Nasal Cavity Cancer ?",
+      "chunk_id": "CancerGov:0000024_7:0000024_7-7#20",
+      "chunk_topic": "Paranasal Sinus and Nasal Cavity Cancer",
+      "chunk_question_type": "treatment",
+      "chunk_text": "IV paranasal sinus and nasal cavity cancer depends on where cancer is found in the paranasal sinuses and nasal cavity. If cancer is in the maxillary sinus, treatment may include the following: - High-dose radiation therapy with or without surgery. - A clinical trial of fractionated radiation therapy. - A clinical trial of chemotherapy before surgery or radiation therapy. - A clinical trial of chemotherapy after surgery or other cancer treatment. - A clinical trial of chemotherapy and radiation therapy. If cancer is in the ethmoid sinus, treatment may include the following: - Radiation therapy before or after surgery. - Chemotherapy and radiation therapy. - A clinical trial of chemotherapy before surgery or radiation therapy. - A clinical trial of",
+      "n_chunks_in_answer": 24
+    },
+    {
+      "query_id": "CancerGov:0000024_6:0000024_6-6",
+      "question": "What are the stages of Oropharyngeal Cancer ?",
+      "chunk_id": "CancerGov:0000024_6:0000024_6-6#0",
+      "chunk_topic": "Oropharyngeal Cancer",
+      "chunk_question_type": "stages",
+      "chunk_text": "Key Points - After oropharyngeal cancer has been diagnosed, tests are done to find out if cancer cells have spread within the oropharynx or to other parts of the body. - There are three ways that cancer spreads in the body. - Cancer may spread from where it began to other parts of the body. - The following stages are used for oropharyngeal cancer: - Stage 0 (Carcinoma in Situ) - Stage I - Stage II - Stage III - Stage IV After oropharyngeal cancer has been diagnosed, tests are done to find out if cancer cells have spread within the oropharynx or to other parts of the body. The process used to find out if cancer has spread within",
+      "n_chunks_in_answer": 9
+    },
+    {
+      "query_id": "GARD:0004319:0004319-1",
+      "question": "What are the symptoms of Natal teeth, intestinal pseudoobstruction and patent ductus ?",
+      "chunk_id": "GARD:0004319:0004319-1#1",
+      "chunk_topic": "Natal teeth, intestinal pseudoobstruction and patent ductus",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "septa 50% Congenital diaphragmatic hernia 50% Natal tooth - The Human Phenotype Ontology (HPO) has collected information on how often a sign or symptom occurs in a condition. Much of this information comes from Orphanet, a European rare disease database. The frequency of a sign or symptom is usually listed as a rough estimate of the percentage of patients who have that feature. The frequency may also be listed as a fraction. The first number of the fraction is how many people had the symptom, and the second number is the total number of people who were examined in one study. For example, a frequency of 25/25 means that in a study of 25 people all patients were found to",
+      "n_chunks_in_answer": 3
+    },
+    {
+      "query_id": "NIDDK:0000042:0000042-11",
+      "question": "What to do for Hypoglycemia ?",
+      "chunk_id": "NIDDK:0000042:0000042-11#1",
+      "chunk_topic": "Hypoglycemia",
+      "chunk_question_type": "considerations",
+      "chunk_text": "to keep their level 70 mg/dL or above. Hypoglycemia Unrelated to Diabetes - In reactive hypoglycemia, symptoms occur within 4 hours of eating. People with reactive hypoglycemia are usually advised to follow a healthy eating plan recommended by a registered dietitian. - Fasting hypoglycemia can be caused by certain medications, critical illnesses, hereditary enzyme or hormonal deficiencies, and some kinds of tumors. Treatment targets the underlying problem.",
+      "n_chunks_in_answer": 2
+    },
+    {
+      "query_id": "GARD:0005978:0005978-1",
+      "question": "What are the symptoms of Synostoses, tarsal, carpal, and digital ?",
+      "chunk_id": "GARD:0005978:0005978-1#2",
+      "chunk_topic": "Synostoses, tarsal, carpal, and digital",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "one study. For example, a frequency of 25/25 means that in a study of 25 people all patients were found to have that symptom. Because these frequencies are based on a specific study, the fractions may be different if another group of patients are examined. Sometimes, no information on frequency is available. In these cases, the sign or symptom may be rare or common.",
+      "n_chunks_in_answer": 3
+    }
+  ],
+  "retrieved_but_unlabelled": [
+    {
+      "query_id": "NHLBI:0000061:0000061-5",
+      "question": "What are the symptoms of Heart Failure ?",
+      "chunk_id": "NHLBI:0000061:0000061-7#0",
+      "chunk_topic": "Heart Failure",
+      "chunk_question_type": "treatment",
+      "chunk_text": "Early diagnosis and treatment can help people who have heart failure live longer, more active lives. Treatment for heart failure depends on the type and severity of the heart failure. The goals of treatment for all stages of heart failure include: Treating the conditions underlying cause, such ascoronary heart disease,high blood pressure, ordiabetes Reducing symptoms Stopping the heart failure from getting worse Increasing your lifespan and improving your quality of life Treatments usually include lifestyle changes, medicines, and ongoing care. If you have severe heart failure, you also may need medical procedures or surgery. Heart-Healthy Lifestyle Changes Your doctor may recommend heart-healthy lifestyle changes if you have heart failure. Heart-healthy lifestyle changes include: Heart-healthy eating Maintaining a healthy weight Physical",
+      "retrieved_by": "dense",
+      "rank": 5
+    },
+    {
+      "query_id": "GHR:0000432:0000432-3",
+      "question": "What are the genetic changes related to gnathodiaphyseal dysplasia ?",
+      "chunk_id": "GHR:0000971:0000971-3#2",
+      "chunk_topic": "task-specific focal dystonia",
+      "chunk_question_type": "genetic changes",
+      "chunk_text": "to be involved in other forms of dystonia, but these genetic changes do not appear to be a major cause of task-specific focal dystonia. Researchers are working to determine which genetic factors are related to this disorder.",
+      "retrieved_by": "lexical",
+      "rank": 3
+    },
+    {
+      "query_id": "GHR:0000769:0000769-2",
+      "question": "How many people are affected by palmoplantar keratoderma with deafness ?",
+      "chunk_id": "GARD:0000953:0000953-1#0",
+      "chunk_topic": "Cardiomyopathy dilated with woolly hair and keratoderma",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "What are the signs and symptoms of Cardiomyopathy dilated with woolly hair and keratoderma? The Human Phenotype Ontology provides the following list of signs and symptoms for Cardiomyopathy dilated with woolly hair and keratoderma. If the information is available, the table below includes how often the symptom is seen in people with this condition. You can use the MedlinePlus Medical Dictionary to look up the definitions for these medical terms. Signs and Symptoms Approximate number of patients (when available) Hypertrophic cardiomyopathy 90% Palmoplantar keratoderma 90% Woolly hair 90% Abnormal blistering of the skin 7.5% Congestive heart failure 7.5% Ventricular tachycardia 5% Autosomal dominant inheritance - Congenital bullous ichthyosiform erythroderma - Dilated cardiomyopathy - Reduced number of teeth - The Human",
+      "retrieved_by": "lexical",
+      "rank": 5
+    },
+    {
+      "query_id": "GARD:0000857:0000857-2",
+      "question": "What are the symptoms of Brooke-Spiegler syndrome ?",
+      "chunk_id": "GARD:0006224:0006224-2#0",
+      "chunk_topic": "Troyer syndrome",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "What are the signs and symptoms of Troyer syndrome? The signs and symptoms of Troyer syndrome can vary, and some people are more severely affected than others. Symptoms typically begin in early childhood. Most affected children have delays in walking and talking, followed by slow deterioration in both manner of walking (gait) and speech. Affected people have progressive muscle weakness and stiffness (spasticity) in the legs; muscle wasting in the hands and feet; paraplegia; leg contractures; learning disorders; and short stature. Mood swings and mood disorders, causing inappropriate euphoria and/or crying, are common. Other features can include drooling; exaggerated reflexes (hyperreflexia) in the legs; uncontrollable movements of the arms and legs (choreoathetosis); skeletal abnormalities; and a bending outward (valgus) of",
+      "retrieved_by": "lexical",
+      "rank": 5
+    },
+    {
+      "query_id": "MPlusHealthTopics:0000290:0000290-1",
+      "question": "What is (are) Disabilities ?",
+      "chunk_id": "NIDDK:0000036:0000036-5#0",
+      "chunk_topic": "Financial Help for Diabetes Care",
+      "chunk_question_type": "information",
+      "chunk_text": "Medicare is a federal health insurance program that pays health care costs for eligible people who are - age 65 or older - under age 65 with certain disabilities - of any age with end-stage renal diseasetotal and permanent kidney failure that requires a kidney transplant or blood-filtering treatments called dialysis What health plans does Medicare offer? Medicare has four parts: - Part A (hospital insurance) covers inpatient care, skilled nursing home residence, hospice care, and home health care. Part A has no premium for those who have paid enough Medicare taxes. A premium is an amount a person must pay periodicallymonthly or quarterlyfor Medicare, other health plan, or drug plan coverage. Part A does have a deductible, an amount",
+      "retrieved_by": "lexical",
+      "rank": 3
+    },
+    {
+      "query_id": "GARD:0004379:0004379-1",
+      "question": "What is (are) Neuroleptic malignant syndrome ?",
+      "chunk_id": "GARD:0004090:0004090-1#0",
+      "chunk_topic": "Mitochondrial neurogastrointestinal encephalopathy syndrome",
+      "chunk_question_type": "information",
+      "chunk_text": "Mitochondrial neurogastrointestinal encephalopathy (MNGIE) syndrome is a condition that particularly affects the digestive system and nervous system. Signs and symptoms of this condition most often begin by age 20 and worsen with time. Almost all people with MNGIE have gastrointestinal dysmotility, in which the muscles and nerves of the digestive system do not move food through the digestive tract efficiently. Affected individuals also experience peripheral neuropathy, droopy eyelids (ptosis), weakness of the muscles that control eye movement (ophthalmoplegia), and hearing loss. Leukoencephalopathy, which is the deterioration of a type of brain tissue known as white matter, is a hallmark of MNGIE; however it does not usually cause symptoms in people with this disorder. Mutations in the TYMP gene cause MNGIE,",
+      "retrieved_by": "dense",
+      "rank": 5
+    },
+    {
+      "query_id": "GHR:0000960:0000960-2",
+      "question": "How many people are affected by succinyl-CoA:3-ketoacid CoA transferase deficiency ?",
+      "chunk_id": "GHR:0001089:0001089-2#0",
+      "chunk_topic": "3-hydroxy-3-methylglutaryl-CoA lyase deficiency",
+      "chunk_question_type": "frequency",
+      "chunk_text": "HMG-CoA lyase deficiency is a rare condition; it has been reported in fewer than 100 individuals worldwide. Most people diagnosed with this disorder have been from Saudi Arabia, Portugal, or Spain.",
+      "retrieved_by": "lexical",
+      "rank": 4
+    },
+    {
+      "query_id": "GHR:0000769:0000769-2",
+      "question": "How many people are affected by palmoplantar keratoderma with deafness ?",
+      "chunk_id": "GARD:0004690:0004690-1#0",
+      "chunk_topic": "Palmoplantar keratoderma",
+      "chunk_question_type": "information",
+      "chunk_text": "Palmoplantar keratoderma (PPK) is a group of conditions characterized by thickening of the palms and soles of the feet. PPK can also be an associated feature of different syndromes. In rare forms of palmoplantar keratoderma, other organs in the body may be affected in addition to the skin. PPK can either be inherited or acquired. Acquired palmoplantar keratodermas may arise as a result of infections, internal disease or cancer, inflammatory skin conditions, or medications. The hereditary palmoplantar keratodermas are caused by a gene abnormality that results in abnormal skin protein (keratin). They can be inherited in an autosomal dominant or autosomal recessive patterns.",
+      "retrieved_by": "dense",
+      "rank": 3
+    },
+    {
+      "query_id": "NINDS:0000237:0000237-2",
+      "question": "What are the treatments for Post-Polio Syndrome ?",
+      "chunk_id": "CancerGov:0000003_5:0000003_5-8#1",
+      "chunk_topic": "Childhood Soft Tissue Sarcoma",
+      "chunk_question_type": "treatment",
+      "chunk_text": "want to think about taking part in a clinical trial. - Patients can enter clinical trials before, during, or after starting their cancer treatment. - Follow-up tests may be needed. There are different types of treatment for patients with childhood soft tissue sarcoma. Different types of treatments are available for patients with childhood soft tissue sarcoma. Some treatments are standard (the currently used treatment), and some are being tested in clinical trials. A treatment clinical trial is a research study meant to help improve current treatments or obtain information on new treatments for patients with cancer. When clinical trials show that a new treatment is better than the standard treatment, the new treatment may become the standard treatment. Because cancer",
+      "retrieved_by": "lexical",
+      "rank": 4
+    },
+    {
+      "query_id": "GARD:0001059:0001059-1",
+      "question": "What are the symptoms of Cerebral palsy ataxic ?",
+      "chunk_id": "GARD:0003201:0003201-2#0",
+      "chunk_topic": "Infantile-onset ascending hereditary spastic paralysis",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "What are the signs and symptoms of Infantile-onset ascending hereditary spastic paralysis? The Human Phenotype Ontology provides the following list of signs and symptoms for Infantile-onset ascending hereditary spastic paralysis. If the information is available, the table below includes how often the symptom is seen in people with this condition. You can use the MedlinePlus Medical Dictionary to look up the definitions for these medical terms. Signs and Symptoms Approximate number of patients (when available) Abnormal pyramidal signs 90% Feeding difficulties in infancy 90% Hemiplegia/hemiparesis 90% Hyperreflexia 90% Hypertonia 90% Neurological speech impairment 90% Abnormality of eye movement 50% Pseudobulbar signs 50% Abnormal lower motor neuron morphology - Abnormality of the corticospinal tract - Abnormality of the eye - Abnormality",
+      "retrieved_by": "dense",
+      "rank": 5
+    },
+    {
+      "query_id": "GHR:0000894:0000894-4",
+      "question": "Is Schinzel-Giedion syndrome inherited ?",
+      "chunk_id": "GARD:0003718:0003718-4#0",
+      "chunk_topic": "Lynch syndrome",
+      "chunk_question_type": "inheritance",
+      "chunk_text": "Is Lynch syndrome an inherited condition? Lynch syndrome cancer risk is inherited in an autosomal dominant pattern, which means one inherited copy of the altered gene in each cell is sufficient to increase cancer risk. It is important to note that people inherit an increased risk of cancer, not the disease itself. Not all people who inherit mutations in these genes will develop cancer.",
+      "retrieved_by": "lexical",
+      "rank": 5
+    },
+    {
+      "query_id": "GHR:0000594:0000594-1",
+      "question": "What is (are) leptin receptor deficiency ?",
+      "chunk_id": "GHR:0000594:0000594-3#2",
+      "chunk_topic": "leptin receptor deficiency",
+      "chunk_question_type": "genetic changes",
+      "chunk_text": "associated with this disorder. Because hypogonadotropic hypogonadism occurs in leptin receptor deficiency, researchers suggest that leptin receptor signaling is also involved in regulating the body's response to hormones that control sexual development, and that this response is affected by LEPR gene mutations. However, the mechanism of this effect is unknown. Leptin receptor deficiency is a rare cause of obesity. Researchers are studying the factors involved in more common forms of obesity.",
+      "retrieved_by": "dense",
+      "rank": 3
+    },
+    {
+      "query_id": "SeniorHealth:0000045:0000045-18",
+      "question": "What is (are) Medicare and Continuing Care ?",
+      "chunk_id": "NIDDK:0000036:0000036-5#10",
+      "chunk_topic": "Financial Help for Diabetes Care",
+      "chunk_question_type": "information",
+      "chunk_text": "about Medicare at www.medicare.gov, the official U.S. Government website for people with Medicare. The website has a full range of information about Medicare, including free publications such as Medicare & You, which is the official Government handbook about Medicare, and Medicare BasicsA Guide for Families and Friends of People with Medicare. Through the Medicare website, people can also - find out if they are eligible for Medicare and when they can enroll - learn about their Medicare health plan options - find out what Medicare covers - find a Medicare Prescription Drug Plan - compare Medicare health plan options in their area - find a health care provider who participates in Medicare - get information about the quality of care",
+      "retrieved_by": "lexical",
+      "rank": 1
+    },
+    {
+      "query_id": "GARD:0005496:0005496-6",
+      "question": "What are the treatments for Schizencephaly ?",
+      "chunk_id": "GARD:0005496:0005496-3#0",
+      "chunk_topic": "Schizencephaly",
+      "chunk_question_type": "causes",
+      "chunk_text": "What causes schizencephaly? The exact cause of schizencephaly is unknown. A small number of people with schizencephaly are found to have changes (mutations) in one of four genes: EMX2, SIX3, SHH, and COL4A1. Rarely, schizencephaly can affect more than one family member. This supports a genetic cause in some cases. Schizencephaly has also been linked to a variety of non-genetic factors, including young maternal age and certain medications and infections that can cause vascular disruptions (disruption of blood flow or blood supply) in a developing baby.",
+      "retrieved_by": "dense",
+      "rank": 2
+    },
+    {
+      "query_id": "GARD:0001416:0001416-3",
+      "question": "What causes Cold urticaria ?",
+      "chunk_id": "MPlusHealthTopics:0000497:0000497-1#1",
+      "chunk_topic": "Hypothermia",
+      "chunk_question_type": "information",
+      "chunk_text": "also get it from being cold and wet, or under cold water for too long. Babies and old people are especially at risk. Babies can get it from sleeping in a cold room. Centers for Disease Control and Prevention",
+      "retrieved_by": "lexical",
+      "rank": 4
+    },
+    {
+      "query_id": "NINDS:0000071:0000071-1",
+      "question": "What is (are) Sotos Syndrome ?",
+      "chunk_id": "GHR:0000923:0000923-2#0",
+      "chunk_topic": "Sotos syndrome",
+      "chunk_question_type": "frequency",
+      "chunk_text": "Sotos syndrome is reported to occur in 1 in 10,000 to 14,000 newborns. Because many of the features of Sotos syndrome can be attributed to other conditions, many cases of this disorder are likely not properly diagnosed, so the true incidence may be closer to 1 in 5,000.",
+      "retrieved_by": "dense",
+      "rank": 1
+    },
+    {
+      "query_id": "NINDS:0000185:0000185-4",
+      "question": "what research (or clinical trials) is being done for Locked-In Syndrome ?",
+      "chunk_id": "CancerGov:0000032_1:0000032_1-7#15",
+      "chunk_topic": "Non-Small Cell Lung Cancer",
+      "chunk_question_type": "treatment",
+      "chunk_text": "an endoscope. Electrocautery Electrocautery is a treatment that uses a probe or needle heated by an electric current to destroy abnormal tissue. For tumors in the airways, electrocautery is done through an endoscope. Watchful waiting Watchful waiting is closely monitoring a patients condition without giving any treatment until signs or symptoms appear or change. This may be done in certain rare cases of non-small cell lung cancer. New types of treatment are being tested in clinical trials. This summary section describes treatments that are being studied in clinical trials. It may not mention every new treatment being studied. Information about clinical trials is available from the NCI website. Chemoprevention Chemoprevention is the use of drugs, vitamins, or other substances to",
+      "retrieved_by": "lexical",
+      "rank": 5
+    },
+    {
+      "query_id": "GARD:0005496:0005496-6",
+      "question": "What are the treatments for Schizencephaly ?",
+      "chunk_id": "GARD:0002956:0002956-2#0",
+      "chunk_topic": "Hydranencephaly",
+      "chunk_question_type": "treatment",
+      "chunk_text": "How might hydranencephaly be treated? Unfortunately, there is no definitive treatment for hydranencephaly. Management of the condition typically focuses on the specific signs and symptoms present in the affected individual and is mostly supportive. Hydrocephalus (the buildup of too much cerebral spinal fluid in the brain) may be treated with a shunt (a surgically implanted tube that helps to drain fluid from the brain).",
+      "retrieved_by": "dense",
+      "rank": 5
+    },
+    {
+      "query_id": "GARD:0004172:0004172-6",
+      "question": "What are the treatments for Multicentric Castleman Disease ?",
+      "chunk_id": "CancerGov:0000001_6:0000001_6-7#12",
+      "chunk_topic": "Childhood Acute Lymphoblastic Leukemia",
+      "chunk_question_type": "treatment",
+      "chunk_text": "that are being studied in the treatment of newly diagnosed high-risk ALL. Monoclonal antibody therapy is a cancer treatment that uses antibodies made in the laboratory, from a single type of immune system cell. These antibodies can identify substances on cancer cells or normal substances that may help cancer cells grow. The antibodies attach to the substances and kill the cancer cells, block their growth, or keep them from spreading. Monoclonal antibodies are given by infusion. They may be used alone or to carry drugs, toxins, or radioactive material directly to cancer cells. Blinatumomab and inotuzumab are monoclonal antibodies being studied in the treatment of refractory childhood ALL. New kinds of targeted therapies are also being studied in the treatment",
+      "retrieved_by": "dense",
+      "rank": 4
+    },
+    {
+      "query_id": "GHR:0000672:0000672-5",
+      "question": "What are the treatments for MPV17-related hepatocerebral mitochondrial DNA depletion syndrome ?",
+      "chunk_id": "GHR:0000038:0000038-5#0",
+      "chunk_topic": "Alpers-Huttenlocher syndrome",
+      "chunk_question_type": "treatment",
+      "chunk_text": "These resources address the diagnosis or management of Alpers-Huttenlocher syndrome: - Gene Review: Gene Review: POLG-Related Disorders - Genetic Testing Registry: Progressive sclerosing poliodystrophy - United Mitochondrial Disease Foundation: Diagnosis of Mitochondrial Disease These resources from MedlinePlus offer information about the diagnosis and management of various health conditions: - Diagnostic Tests - Drug Therapy - Surgery and Rehabilitation - Genetic Counseling - Palliative Care",
+      "retrieved_by": "dense",
+      "rank": 3
+    },
+    {
+      "query_id": "GARD:0000702:0000702-2",
+      "question": "What are the symptoms of Beta ketothiolase deficiency ?",
+      "chunk_id": "GARD:0002595:0002595-2#0",
+      "chunk_topic": "Glucose-6-phosphate dehydrogenase deficiency",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "What are the signs and symptoms of glucose-6-phosphate dehydrogenase (G6PD) deficiency? People with G6PD deficiency do not have signs of the disease unless their red blood cells are exposed to certain chemicals in food or medicine, certain bacterial or viral infections, or to stress. Many people with this condition never experience symptoms. The most common medical problem associated with G6PD deficiency is hemolytic anemia, which occurs when red blood cells are destroyed faster than the body can replace them. This type of anemia leads to paleness, yellowing of the skin and whites of the eyes (jaundice), dark urine, fatigue, shortness of breath, enlarged spleen, and a rapid heart rate. Researchers believe that carriers of a mutation in the G6PD gene",
+      "retrieved_by": "lexical",
+      "rank": 2
+    },
+    {
+      "query_id": "GARD:0001640:0001640-4",
+      "question": "What are the treatments for Craniopharyngioma ?",
+      "chunk_id": "CancerGov:0000006_8:0000006_8-2#0",
+      "chunk_topic": "Childhood Craniopharyngioma",
+      "chunk_question_type": "susceptibility",
+      "chunk_text": "There are no known risk factors for childhood craniopharyngioma. Craniopharyngiomas are rare in children younger than 2 years of age and are most often diagnosed in children aged 5 to 14 years. It is not known what causes these tumors.",
+      "retrieved_by": "dense",
+      "rank": 3
+    },
+    {
+      "query_id": "GARD:0003960:0003960-1",
+      "question": "What are the symptoms of Mesomelic dysplasia Kantaputra type ?",
+      "chunk_id": "GARD:0000093:0000093-1#0",
+      "chunk_topic": "Acromesomelic dysplasia Hunter Thompson type",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "What are the signs and symptoms of Acromesomelic dysplasia Hunter Thompson type? The Human Phenotype Ontology provides the following list of signs and symptoms for Acromesomelic dysplasia Hunter Thompson type. If the information is available, the table below includes how often the symptom is seen in people with this condition. You can use the MedlinePlus Medical Dictionary to look up the definitions for these medical terms. Signs and Symptoms Approximate number of patients (when available) Abnormality of the ankles 90% Brachydactyly syndrome 90% Elbow dislocation 90% Micromelia 90% Neurological speech impairment 90% Short stature 90% Single transverse palmar crease 90% Tarsal synostosis 90% Abnormality of the hip bone 50% Abnormality of the wrist 50% Cognitive impairment 50% Limitation of joint",
+      "retrieved_by": "dense",
+      "rank": 2
+    },
+    {
+      "query_id": "MPlusHealthTopics:0000497:0000497-1",
+      "question": "What is (are) Hypothermia ?",
+      "chunk_id": "SeniorHealth:0000036:0000036-19#6",
+      "chunk_topic": "High Blood Pressure",
+      "chunk_question_type": "exams and tests",
+      "chunk_text": "Are there any foods, beverages, or dietary supplements I should avoid when taking this medicine? - What should I do if I forget to take my blood pressure medicine at the recommended time? Should I take it as soon as I remember or should I wait until the next dosage is due? - What is the name of my blood pressure medication? - Is that the brand name or the generic name? - What are the possible side effects of my medication? (Be sure the doctor knows about any allergies you have and any other medications you are taking, including over-the-counter drugs, vitamins, and dietary supplements.) - What time of day should I take my blood pressure medicine? - Are",
+      "retrieved_by": "lexical",
+      "rank": 5
+    },
+    {
+      "query_id": "GARD:0005496:0005496-6",
+      "question": "What are the treatments for Schizencephaly ?",
+      "chunk_id": "CancerGov:0000003_5:0000003_5-8#1",
+      "chunk_topic": "Childhood Soft Tissue Sarcoma",
+      "chunk_question_type": "treatment",
+      "chunk_text": "want to think about taking part in a clinical trial. - Patients can enter clinical trials before, during, or after starting their cancer treatment. - Follow-up tests may be needed. There are different types of treatment for patients with childhood soft tissue sarcoma. Different types of treatments are available for patients with childhood soft tissue sarcoma. Some treatments are standard (the currently used treatment), and some are being tested in clinical trials. A treatment clinical trial is a research study meant to help improve current treatments or obtain information on new treatments for patients with cancer. When clinical trials show that a new treatment is better than the standard treatment, the new treatment may become the standard treatment. Because cancer",
+      "retrieved_by": "lexical",
+      "rank": 5
+    },
+    {
+      "query_id": "GARD:0001393:0001393-2",
+      "question": "What are the symptoms of Coccygodynia ?",
+      "chunk_id": "GARD:0001984:0001984-1#0",
+      "chunk_topic": "Dyssynergia cerebellaris myoclonica",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "What are the signs and symptoms of Dyssynergia cerebellaris myoclonica? The Human Phenotype Ontology provides the following list of signs and symptoms for Dyssynergia cerebellaris myoclonica. If the information is available, the table below includes how often the symptom is seen in people with this condition. You can use the MedlinePlus Medical Dictionary to look up the definitions for these medical terms. Signs and Symptoms Approximate number of patients (when available) Generalized seizures 7.5% Abnormality of the dentate nucleus - Abnormality of the mitochondrion - Ataxia - Autosomal dominant inheritance - Intention tremor - Myoclonus - Pallidal degeneration - Ragged-red muscle fibers - The Human Phenotype Ontology (HPO) has collected information on how often a sign or symptom occurs in",
+      "retrieved_by": "dense",
+      "rank": 4
+    },
+    {
+      "query_id": "NIDDK:0000005:0000005-9",
+      "question": "What to do for Hashimoto's Disease ?",
+      "chunk_id": "NIDDK:0000008:0000008-3#4",
+      "chunk_topic": "Hyperthyroidism",
+      "chunk_question_type": "causes",
+      "chunk_text": "even though the thyroid may be enlarged. Like postpartum thyroiditis, silent thyroiditis is probably an autoimmune condition and sometimes develops into permanent hypothyroidism. Consuming Too Much Iodine The thyroid uses iodine to make thyroid hormone, so the amount of iodine consumed influences the amount of thyroid hormone the thyroid makes. In some people, consuming large amounts of iodine may cause the thyroid to make excess thyroid hormone. Sometimes significant amounts of iodine are contained in medicationssuch as amiodarone, which is used to treat heart problemsor in supplements containing seaweed. Some cough syrups also contain large amounts of iodine. See Eating, Diet, and Nutrition for more information on iodine. Overmedicating with Synthetic Thyroid Hormone Some people who take synthetic thyroid hormone",
+      "retrieved_by": "dense",
+      "rank": 5
+    },
+    {
+      "query_id": "CancerGov:0000014_2:0000014_2-5",
+      "question": "What is the outlook for Uterine Sarcoma ?",
+      "chunk_id": "NHLBI:0000067:0000067-1#3",
+      "chunk_topic": "Hemochromatosis",
+      "chunk_question_type": "information",
+      "chunk_text": "Others have severe complications or die from the disease. Certain factors can affect the severity of the disease. For example, a high intake of vitamin C can make hemochromatosis worse. This is because vitamin C helps your body absorb iron from food. Alcohol use can worsen liver damage and cirrhosis caused by hemochromatosis. Conditions such as hepatitis also can further damage or weaken the liver. Outlook The outlook for people who have hemochromatosis largely depends on how much organ damage they have at the time of diagnosis. Early diagnosis and treatment of the disease are important. Treatment may help prevent, delay, or sometimes reverse complications of the disease. Treatment also may lead to better quality of life. For people who",
+      "retrieved_by": "lexical",
+      "rank": 3
+    },
+    {
+      "query_id": "GHR:0000221:0000221-3",
+      "question": "What are the genetic changes related to congenital deafness with labyrinthine aplasia, microtia, and microdontia ?",
+      "chunk_id": "GARD:0004262:0004262-2#0",
+      "chunk_topic": "Myhre syndrome",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "What are the signs and symptoms of Myhre syndrome? Myhre syndrome is a condition with features affecting many systems and functions of the body. Associated findings might include: Delayed development of language and motor skills such as crawling and walking Intellectual disability that ranges from mild to moderate Behavioral issues such as features of autism or related developmental disorders affecting communication and social interaction Hearing loss, which can be caused by changes in the inner ear (sensorineural deafness), changes in the middle ear (conductive hearing loss), or both (mixed hearing loss) Reduced growth, beginning before birth and continuing through adolescence and affecting weight and height (many are shorter than about 97 percent of their peers) Stiffness of the skin resulting",
+      "retrieved_by": "lexical",
+      "rank": 1
+    },
+    {
+      "query_id": "SeniorHealth:0000012:0000012-13",
+      "question": "How to diagnose COPD ?",
+      "chunk_id": "SeniorHealth:0000012:0000012-4#4",
+      "chunk_topic": "COPD",
+      "chunk_question_type": "symptoms",
+      "chunk_text": "and mild symptoms such as chronic cough and sputum (mucus) production. People with mild COPD have mild breathing limitation. Symptoms may include a chronic cough and sputum (mucus) production. At this stage, you may not be aware that airflow in your lungs is reduced. People with moderate COPD have a breathing test that shows worsening airflow blockages. Symptoms may be worse than with mild COPD and you may experience shortness of breath while working hard, walking fast, or doing brisk activity. At this stage, you would seek medical attention. People with severe COPD have a breathing test that shows severe limitation of the airflow. People with severe COPD will be short of breath after just a little activity. In very",
+      "retrieved_by": "dense",
+      "rank": 5
+    }
+  ]
+}

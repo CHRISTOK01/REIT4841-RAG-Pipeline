@@ -1,4 +1,5 @@
-# Full experiment sweep config. Run with:
+# Full experiment sweep config.
+#   python -m experiments.run_sweep --config configs/full_sweep.yaml --dry-run   (plan + cost, no API calls)
 #   python -m experiments.run_sweep --config configs/full_sweep.yaml
 #
 # Sweeps every (retrieval_method x kb_variant) combination over the fixed query
@@ -14,23 +15,36 @@ query_set: datasets/processed/query_set.jsonl
 retrieval_methods: [lexical, dense, hybrid]
 kb_variants: [curated, mixed, reduced]
 top_k: 5
+seed: 123           # every per-record seed (generation, judge, random baseline, noise chunk) derives from this
+
+# Reference points run through the same harness:
+#   oracle = the query's own gold chunks (upper bound), per KB variant
+#   random = top_k chunks drawn at random (lower bound), per KB variant
+#   none   = no retrieval at all, closed-book prompt (run once; not tied to a KB variant)
+baselines: [oracle, random, none]
 
 hybrid:
   k_per_retriever: 50   # candidates each sub-retriever contributes before RRF fusion
+  rrf_k: 60             # RRF constant (Cormack et al., 2009)
 
 generation_metrics:
   enabled: true
   answer_relevance_num_questions: 3
+  reference_agreement: true   # also score each answer's claims against the MedQuAD reference answer
 
 robustness:
   enabled: true
-  seed: 123
-  # Perturbation (drop top relevant chunk / inject an off-topic distractor) is run
-  # against only this one retrieval method, applied on top of every KB variant, to
-  # bound API cost -- it's a 2x add-on to that slice of the grid, not a 3x add-on
-  # to the whole sweep. `dense` is the default since it's the retrieval method most
-  # directly sensitive to which chunks end up in the embedding-similarity neighborhood.
+  # Perturbations are run against only this one retrieval method, on every KB
+  # variant, to bound API cost.
   retrieval_method: dense
+  perturbations: [drop_top_relevant, inject_noise, control_rerun]
+
+execution:
+  max_workers: 8        # parallel API workers; results do not depend on this value
+
+budget:
+  max_usd: 10.0         # hard cap, cumulative over everything that shares the ledger file
+  ledger: artifacts/api_spend.json
 
 paths:
   processed_data_dir: datasets/processed

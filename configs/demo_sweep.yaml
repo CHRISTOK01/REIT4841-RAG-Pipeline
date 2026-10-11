@@ -1,0 +1,45 @@
+# Demo sweep config -- NOT for thesis results. Small, fast, cheap: 3 queries x
+# 3 retrieval methods over a single KB variant, so you can see the pipeline
+# run end-to-end (retrieval -> generation -> metrics -> CSV/plots) in a couple
+# of minutes for a few cents of API spend, without touching results/full_sweep.jsonl.
+#
+# Run with:
+#   python -m experiments.run_sweep --config configs/demo_sweep.yaml
+#   python -m analysis.export_csv --results results/demo_sweep.jsonl --out-dir reports/demo
+
+kb_variants_config: configs/kb_variants.yaml
+generation_config: configs/generation.yaml
+query_set: datasets/processed/demo_query_set.jsonl
+
+retrieval_methods: [lexical, dense, hybrid]
+kb_variants: [curated]
+top_k: 3
+seed: 123
+baselines: []
+
+hybrid:
+  k_per_retriever: 50
+  rrf_k: 60
+
+generation_metrics:
+  enabled: true
+  answer_relevance_num_questions: 2
+  reference_agreement: true
+
+robustness:
+  enabled: true
+  retrieval_method: dense
+  perturbations: [drop_top_relevant, inject_noise, control_rerun]
+
+execution:
+  max_workers: 4
+
+budget:
+  max_usd: 10.0
+  ledger: artifacts/api_spend.json
+
+paths:
+  processed_data_dir: datasets/processed
+  artifacts_root: artifacts
+  embedding_cache: artifacts/embedding_cache.sqlite
+  results: results/demo_sweep.jsonl
