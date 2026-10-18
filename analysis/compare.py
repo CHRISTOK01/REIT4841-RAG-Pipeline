@@ -87,6 +87,11 @@ def paired_comparisons(df: pd.DataFrame, metrics: list[str], seed: int = 0) -> p
         return pd.DataFrame(columns=COMPARISON_COLUMNS)
     rows = _pairwise(df, "retrieval_method", "kb_variant", metrics, "methods_within_kb", seed)
     rows += _pairwise(df, "kb_variant", "retrieval_method", metrics, "kbs_within_method", seed)
+    return _holm_and_verdict(rows)
+
+
+def _holm_and_verdict(rows: list[dict]) -> pd.DataFrame:
+    """Holm-adjust within each (family, metric) and attach the verdict."""
     result = pd.DataFrame(rows)
     if result.empty:
         return pd.DataFrame(columns=COMPARISON_COLUMNS)

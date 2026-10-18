@@ -31,3 +31,9 @@ results/raw/
 
 # Test coverage data
 .coverage
+
+# Thesis documents, poster and course material (kept local, not committed)
+/*.docx
+/*.pdf
+/*.pptx
+~$*

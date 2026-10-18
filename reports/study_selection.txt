@@ -1,0 +1,2 @@
+Study 2 retrieval method: dense
+Rule (fixed in advance): highest mean ndcg_at_k_all on the curated KB among lexical, dense and hybrid; an exact tie is broken by the higher mean faithfulness, then by name.

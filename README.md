@@ -149,6 +149,24 @@ At the default config, from the real MedQuAD download:
 - `inject_noise`: replace the lowest-ranked non-relevant chunk, in place, with an off-topic chunk.
 - `control_rerun`: regenerate on the unchanged context, to measure noise.
 
+**Study analyses** (`analysis/studies.py`, `analysis/correlation.py`; all from the log, no API calls)
+
+- Study 2 method rule, fixed in advance: highest mean `ndcg_at_k_all` on `curated` among the three
+  real methods; an exact tie is broken by mean faithfulness. On the full sweep this selects `dense`
+  (`reports/study_selection.txt`).
+- Planned comparisons (`reports/study_comparisons.csv`): Study 1 = the three methods on `curated`,
+  Study 2 = the three KB variants with the selected method; paired bootstrap + Wilcoxon, Holm
+  within each study and metric. `paired_comparisons.csv` stays as the exhaustive table.
+- Interaction (`method_ranks_by_kb.csv`, `method_kb_interaction.csv`): each method's rank per KB,
+  and the per-query change in the gap between two methods from `curated` to `mixed`/`reduced`.
+- RQ4 (`retrieval_generation_correlations.csv`, `figures/rq4_correlations_*.png`): Spearman's rho
+  and Kendall's tau-b between each retrieval metric (`_all`, strict) and each generation metric,
+  pooled over the nine real configurations (95% CI from a bootstrap that resamples whole queries)
+  and per configuration. Baselines are excluded.
+- Robustness relative degradation (thesis Eq. 3.13): `<metric>_rel_degradation` =
+  (baseline − perturbed) / baseline, undefined when the baseline is below 0.1; the absolute change
+  is `-<metric>_delta`.
+
 **Harness** (`experiments/`)
 
 - Every row logs: query id, configuration, retrieved chunk ids/scores/text, relevant ids under

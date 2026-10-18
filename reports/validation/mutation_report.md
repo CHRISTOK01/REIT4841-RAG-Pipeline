@@ -1,6 +1,6 @@
 # Mutation testing report
 
-Mutants injected: 90. Killed: 90. Survived: 0. **Mutation score: 100%**.
+Mutants injected: 99. Killed: 99. Survived: 0. **Mutation score: 100%**.
 
 Each mutant is one deliberate bug injected into a copy of the code. "Killed" means at least one
 test failed with the bug in place. "Tier" says whether the fast unit tests caught it or it took
@@ -98,3 +98,12 @@ the slower real-data / harness tests. Produced by `python -m scripts.mutation_te
 | M88 | `retrieval/embedding_cache.py` | truncated cached vector is not detected | killed | fast | `tests/test_embedding_cache.py::test_truncated_vector_in_cache_raises` |
 | M89 | `retrieval/embedding_cache.py` | mixed-dimension vectors are not detected | killed | fast | `tests/test_embedding_cache.py::test_shortened_vector_with_whole_floats_is_caught_as_a_dimension_mismatch` |
 | M90 | `generation/parsing.py` | an empty section swallows the next heading (pre-audit parser) | killed | fast | `tests/test_parsing.py::test_an_empty_section_is_empty_and_does_not_swallow_the_next_heading` |
+| M91 | `analysis/correlation.py` | Kendall tau-a instead of tau-b (ties not corrected) | killed | fast | `tests/test_correlation.py::test_matches_the_definitions_on_tied_data_like_the_real_metrics[0]` |
+| M92 | `analysis/correlation.py` | pairs with a NaN are counted as 0 instead of dropped | killed | fast | `tests/test_correlation.py::test_pairs_with_a_nan_are_dropped_not_counted_as_zero` |
+| M93 | `analysis/correlation.py` | bootstrap resamples rows instead of whole queries | killed | fast | `tests/test_correlation.py::test_cluster_bootstrap_resamples_whole_queries_not_rows` |
+| M94 | `analysis/correlation.py` | baselines included in the pooled correlation | killed | fast | `tests/test_correlation.py::test_table_pools_real_methods_only_and_has_one_scope_per_configuration` |
+| M95 | `analysis/studies.py` | Study 2 method chosen by the lowest NDCG | killed | fast | `tests/test_studies.py::test_study2_method_is_the_highest_mean_ndcg_on_curated` |
+| M96 | `analysis/studies.py` | NDCG tie broken by lower faithfulness | killed | fast | `tests/test_studies.py::test_an_exact_ndcg_tie_is_broken_by_faithfulness` |
+| M97 | `analysis/studies.py` | interaction gap computed on curated twice (degraded KB ignored) | killed | fast | `tests/test_studies.py::test_change_in_gap_is_computed_query_by_query` |
+| M98 | `analysis/aggregate.py` | relative degradation divides by the perturbed score | killed | fast | `tests/test_studies.py::test_relative_degradation_by_hand` |
+| M99 | `analysis/aggregate.py` | relative degradation kept for a near-zero baseline | killed | fast | `tests/test_studies.py::test_relative_degradation_is_undefined_near_a_zero_baseline` |

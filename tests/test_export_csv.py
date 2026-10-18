@@ -53,7 +53,27 @@ def test_export_writes_every_table_with_the_expected_rows_and_values(tmp_path):
     assert robustness_aggregated.loc["control_rerun", "faithfulness_delta"] == pytest.approx(0.0)
     assert (out_dir / "robustness_summary.csv").exists()
 
-    for figure in ("recall_at_k_all.png", "faithfulness.png", "abstained.png", "robustness_deltas.png"):
+    # relative degradation (Eq. 3.13): (1.0 - p) / 1.0 for p = 0.5, 0.6, 0.7, 0.8 -> mean 0.35
+    assert robustness_aggregated.loc["drop_top_relevant", "faithfulness_rel_degradation"] == pytest.approx(0.35)
+    assert robustness_aggregated.loc["control_rerun", "faithfulness_rel_degradation"] == pytest.approx(0.0)
+
+    # dense beats lexical on NDCG (0.625 vs 0.3125): it is the Study 2 method
+    assert "Study 2 retrieval method: dense" in (out_dir / "study_selection.txt").read_text(encoding="utf-8")
+    study = pd.read_csv(out_dir / "study_comparisons.csv")
+    assert set(study["family"]) == {"study1_methods_on_curated"}  # one KB in this log, so Study 2 has no pairs
+    correlations = pd.read_csv(out_dir / "retrieval_generation_correlations.csv")
+    assert {"pooled", "curated/dense", "curated/lexical"} <= set(correlations["scope"])
+    assert pd.read_csv(out_dir / "method_ranks_by_kb.csv").shape[0] > 0
+
+    for figure in (
+        "recall_at_k_all.png",
+        "faithfulness.png",
+        "abstained.png",
+        "robustness_deltas.png",
+        "study1_distributions.png",
+        "rq4_correlations_spearman.png",
+        "rq4_correlations_kendall.png",
+    ):
         assert (out_dir / "figures" / figure).stat().st_size > 5000, figure
 
 

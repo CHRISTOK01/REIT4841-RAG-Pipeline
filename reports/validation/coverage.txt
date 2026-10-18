@@ -1,10 +1,12 @@
 Name                                Stmts   Miss Branch BrPart  Cover
 analysis\__init__.py                    0      0      0      0   100%
-analysis\aggregate.py                 105      1     34      1    99%
-analysis\compare.py                    33      2     14      2    91%
-analysis\export_csv.py                 33      6      4      1    81%
-analysis\plots.py                     103      4     28      4    94%
+analysis\aggregate.py                 115      1     38      1    99%
+analysis\compare.py                    35      2     14      2    92%
+analysis\correlation.py                71      2     22      2    96%
+analysis\export_csv.py                 48      6      6      1    87%
+analysis\plots.py                     160      8     44      6    93%
 analysis\stats.py                      67      0     14      0   100%
+analysis\studies.py                    64      1     20      1    98%
 data\__init__.py                        0      0      0      0   100%
 data\chunking.py                       38      0     12      1    98%
 data\ingest_medquad.py                103     26     38      3    74%
@@ -36,4 +38,4 @@ retrieval\embedding_cache.py           65      1     22      1    98%
 retrieval\hybrid.py                    34      0     10      0   100%
 retrieval\index_store.py               56      0      8      0   100%
 retrieval\lexical.py                   30      0      6      0   100%
-TOTAL                                2120    210    546     35    89%
+TOTAL                                2339    217    610     40    90%

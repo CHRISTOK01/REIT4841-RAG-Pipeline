@@ -17,7 +17,7 @@ python -m scripts.verify_all
 | Real data | `python -m pytest` (same command) | The real MedQuAD corpus, the real KB variants, the real 150 queries, the real cached embeddings and indexes | none (no API call is possible: a cache miss fails the test) |
 | Real API | `python -m pytest --run-api` | The real OpenAI generator, judge and embedder | a few cents; capped by `--api-max-usd` (default US$0.50) and by the project spend cap |
 
-Counts at the time of writing: 795 tests in the fast and real-data tiers (about 7 minutes) and 26 real-API tests (20 negative-control checks and 6 smoke checks; about 2 minutes and US$0.02).
+Counts at the time of writing: 825 tests in the fast and real-data tiers (about 10 minutes) and 26 real-API tests (20 negative-control checks and 6 smoke checks; about 2 minutes and US$0.02).
 
 Rules the tests follow:
 
@@ -161,6 +161,22 @@ Rules the tests follow:
   flagged about 5% of the time. Holm adjustment and the power formula are checked by hand and by
   simulation. Bar heights and whiskers are read back out of a drawn figure.
 
+### Study analyses and RQ4 (`tests/test_correlation.py`, `tests/test_studies.py`)
+
+- *Rank correlations*: Spearman and Kendall tau-b are compared with versions written out from
+  their definitions in the test file (Pearson correlation of average ranks; pair counting with the
+  tie correction) on tied data shaped like the real metrics, plus a hand-worked case (rho = 0.8,
+  tau = 4/6). NaN pairs are dropped, a constant variable gives "undefined", baselines are kept out
+  of the pooled correlation.
+- *Cluster bootstrap*: when every query is repeated 30 times the interval must stay as wide as for
+  the 12 queries alone, which fails if rows rather than whole queries are resampled.
+- *Study 2 method rule*: hand tables for the highest-NDCG rule, the faithfulness tie-break, and
+  that other KBs and baselines do not count.
+- *Planned comparisons*: exactly the three Study 1 pairs and the three Study 2 pairs; raw p-values
+  equal SciPy's Wilcoxon and the Holm adjustment is applied within each study.
+- *Interaction*: a constant 0.3 change in the gap between two methods is recovered exactly.
+- *Relative degradation*: hand values, the sign convention, and NaN below a baseline of 0.1.
+
 ## 3. Requirement-to-test map
 
 | Requirement | Where it is tested |
@@ -184,6 +200,9 @@ Rules the tests follow:
 | Failure handling | `test_client.py`, `test_generator.py`, `test_run_sweep_integration.py` |
 | Cost cap and dry run | `test_budget.py`, `test_client.py`, `test_api_smoke.py` |
 | Tables, plots, CSV, statistics | `test_aggregate.py`, `test_stats.py`, `test_export_csv.py` |
+| Study 2 method rule, planned comparisons, interaction | `test_studies.py`, `test_export_csv.py` |
+| RQ4 retrieval-vs-generation correlations | `test_correlation.py`, `test_export_csv.py` |
+| Relative degradation (Eq. 3.13) | `test_studies.py`, `test_export_csv.py` |
 | Output data sound | `scripts.validate_results` → `reports/validation/data_validation.md` |
 
 ## 4. Mutation testing
@@ -191,7 +210,7 @@ Rules the tests follow:
 `python -m scripts.mutation_test` injects one deliberate bug at a time into a copy of the code and
 runs the tests that cover that module. A bug the tests do not notice is a "surviving mutant".
 
-**Result: 90 bugs injected, 90 caught. Mutation score 100%.** The full list, with the test that
+**Result: 99 bugs injected, 99 caught. Mutation score 100%.** The full list, with the test that
 caught each one, is in `reports/validation/mutation_report.md`.
 
 | Area | Bugs injected | Examples |
@@ -206,6 +225,7 @@ caught each one, is in `reports/validation/mutation_report.md`.
 | Perturbations | 6 | drop removes two chunks; noise replaces the wrong chunk; noise inserted instead of replacing; noise on the query's topic |
 | Generation metrics and generator | 9 | "no information" counted against or for faithfulness; quoted booleans accepted; judge at 0.7; summary not checked; cut-off answer accepted |
 | Analysis and statistics | 9 | unanswerable queries dropped from the headline; delta sign flipped; duplicates undetected; 80% interval; unaligned pairs |
+| Study analyses, RQ4 correlations, relative degradation | 9 | Kendall tau-a instead of tau-b; NaN pairs counted as 0; bootstrap over rows not queries; baselines pooled; Study 2 picks the lowest NDCG; wrong tie-break; interaction ignores the degraded KB; relative degradation divided by the wrong score or kept for a near-zero baseline |
 | Harness, store, cache, index | 15 | resume re-runs everything; failed row marked done; mixed setups accepted; shared seed; stale index reused; cache key ignores the model |
 
 Honest limits of this number: the same author wrote the mutants and the tests, so 100% shows that
@@ -216,8 +236,8 @@ swapping the logarithm base in NDCG cancels out in the ratio.
 ## 5. Coverage
 
 From `python -m scripts.verify_all` (per-file table in `reports/validation/coverage.txt`):
-**line coverage 90.1%** (1,910 of 2,120 statements); **line and branch combined 89%** (546
-branches, 35 partly covered).
+**line coverage 90.7%** (2,122 of 2,339 statements); **line and branch combined 90%** (610
+branches, 40 partly covered).
 
 What is not covered by the default tiers, and why:
 

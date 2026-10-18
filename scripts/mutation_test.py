@@ -79,6 +79,10 @@ RO = "evaluation/robustness.py"
 GM = "evaluation/generation_metrics.py"
 AG = "analysis/aggregate.py"
 ST = "analysis/stats.py"
+CO = "analysis/correlation.py"
+SD = "analysis/studies.py"
+T_CORR = ("tests/test_correlation.py",)
+T_STUDIES = ("tests/test_studies.py", "tests/test_export_csv.py")
 RU = "experiments/runner.py"
 RS = "experiments/results_store.py"
 IS = "retrieval/index_store.py"
@@ -247,7 +251,7 @@ MUTANTS: list[Mutant] = [
     Mutant("M68", AG, "unanswerable queries count as 0 in the answerable-only view",
            'columns[f"{m}{suffix}"] = value if answerable else math.nan', 'columns[f"{m}{suffix}"] = value if answerable else 0.0', T_AGG, T_SWEEP),
     Mutant("M69", AG, "abstention rate counts partial answers too",
-           '"abstained": 1.0 if metrics["abstention_label"] == "abstained" else 0.0,', '"abstained": 1.0 if metrics["abstention_label"] != "answered" else 0.0,', T_AGG),
+           '"abstained": 1.0 if abstained else 0.0,', '"abstained": 1.0 if metrics["abstention_label"] != "answered" else 0.0,', T_AGG),
     Mutant("M70", AG, "duplicate rows are not detected", "    if len(set(keys)) != len(keys):", "    if False:", T_AGG, T_SWEEP),
     Mutant("M71", AG, "robustness delta is baseline minus perturbed (sign flipped)",
            'row[f"{metric}_delta"] = perturbed[metric] - baseline[metric]', 'row[f"{metric}_delta"] = baseline[metric] - perturbed[metric]', T_AGG),
@@ -285,6 +289,28 @@ MUTANTS: list[Mutant] = [
     Mutant("M90", PA, "an empty section swallows the next heading (pre-audit parser)",
            r'r"^#{1,6}[ \t]*(Summary|Key Points|Disclaimer)[ \t]*\n(.*?)(?=^#{1,6}[ \t]*\w|\Z)"',
            r'r"^#{1,6}\s*(Summary|Key Points|Disclaimer)\s*\n(.*?)(?=\n#{1,6}\s*\w|\Z)"', ("tests/test_parsing.py", "tests/test_generation_metrics.py")),
+    Mutant("M91", CO, "Kendall tau-a instead of tau-b (ties not corrected)",
+           'scipy_stats.kendalltau(x_arr, y_arr, variant="b")', 'scipy_stats.kendalltau(x_arr, y_arr, variant="c")', T_CORR),
+    Mutant("M92", CO, "pairs with a NaN are counted as 0 instead of dropped",
+           "    keep = ~(np.isnan(x_arr) | np.isnan(y_arr))\n    x_arr, y_arr = x_arr[keep], y_arr[keep]",
+           "    x_arr, y_arr = np.nan_to_num(x_arr), np.nan_to_num(y_arr)", T_CORR),
+    Mutant("M93", CO, "bootstrap resamples rows instead of whole queries",
+           "groups = [g[[x_col, y_col]].to_numpy(dtype=float) for _, g in data.groupby(cluster_col)]",
+           "groups = [row.reshape(1, 2) for row in data[[x_col, y_col]].to_numpy(dtype=float)]", T_CORR),
+    Mutant("M94", CO, "baselines included in the pooled correlation",
+           'real = df[df["retrieval_method"].isin(REAL_METHODS)] if not df.empty else df',
+           'real = df', T_CORR),
+    Mutant("M95", SD, "Study 2 method chosen by the lowest NDCG",
+           "            -means.loc[m, SELECTION_METRIC],", "            means.loc[m, SELECTION_METRIC],", T_STUDIES),
+    Mutant("M96", SD, "NDCG tie broken by lower faithfulness",
+           "            -(means.loc[m, TIE_BREAK_METRIC]", "            (means.loc[m, TIE_BREAK_METRIC]", T_STUDIES),
+    Mutant("M97", SD, "interaction gap computed on curated twice (degraded KB ignored)",
+           "gap_kb = (wide[(kb, a)] - wide[(kb, b)]).to_numpy()",
+           "gap_kb = (wide[(REFERENCE_KB, a)] - wide[(REFERENCE_KB, b)]).to_numpy()", T_STUDIES),
+    Mutant("M98", AG, "relative degradation divides by the perturbed score",
+           "    return (baseline - perturbed) / baseline", "    return (baseline - perturbed) / perturbed if perturbed else math.nan", T_STUDIES + T_AGG),
+    Mutant("M99", AG, "relative degradation kept for a near-zero baseline",
+           " or baseline < REL_DEGRADATION_MIN_BASELINE:", " or baseline == 0:", T_STUDIES),
 ]
 
 

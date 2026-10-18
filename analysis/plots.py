@@ -160,3 +160,83 @@ def plot_robustness_deltas(robustness_summary_df: pd.DataFrame, out_path: Path, 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_path, dpi=150)
     plt.close(fig)
+
+
+def plot_metric_distributions(df: pd.DataFrame, metrics: list[str], out_path: Path, kb_variant: str = "curated") -> None:
+    """Study 1 figure: one panel per metric, a box plot of the per-query values
+    for each real retrieval method on one KB variant (box = quartiles, line =
+    median, whiskers = 1.5 IQR, white diamond = mean). `df` is the per-query
+    table from analysis.aggregate.load_standard_results."""
+    data = df[(df["kb_variant"] == kb_variant) & df["retrieval_method"].isin(["lexical", "dense", "hybrid"])] if not df.empty else df
+    metrics = [m for m in metrics if not data.empty and data[m].notna().any()]
+    if not metrics:
+        print("Skipping distribution plot: no data.")
+        return
+    methods = _ordered(data["retrieval_method"], METHOD_ORDER)
+    n_cols = min(3, len(metrics))
+    n_rows = -(-len(metrics) // n_cols)
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(4.2 * n_cols, 3.4 * n_rows), squeeze=False)
+    for ax, metric in zip(axes.flat, metrics):
+        values = [data.loc[data["retrieval_method"] == m, metric].dropna().to_numpy() for m in methods]
+        box = ax.boxplot(
+            values,
+            patch_artist=True,
+            widths=0.55,
+            showmeans=True,
+            meanprops={"marker": "D", "markerfacecolor": "white", "markeredgecolor": _INK, "markersize": 5},
+            medianprops={"color": _INK, "linewidth": 1.2},
+            whiskerprops={"color": _INK, "linewidth": 0.8},
+            capprops={"color": _INK, "linewidth": 0.8},
+            flierprops={"marker": "o", "markersize": 3, "markerfacecolor": _GRID, "markeredgecolor": _INK, "alpha": 0.6},
+        )
+        for patch, method in zip(box["boxes"], methods):
+            patch.set_facecolor(METHOD_STYLE[method]["color"])
+            patch.set_edgecolor("white")
+        ax.set_xticks(np.arange(1, len(methods) + 1))
+        ax.set_xticklabels([f"{m}\n(n={len(v)})" for m, v in zip(methods, values)], color=_INK, fontsize=8)
+        ax.set_title(metric, color=_INK, loc="left", fontsize=10)
+        _style_axes(ax)
+    for ax in axes.flat[len(metrics) :]:
+        ax.set_visible(False)
+    fig.suptitle(f"Per-query distribution by retrieval method, {kb_variant} KB", color=_INK, x=0.01, ha="left")
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, dpi=150)
+    plt.close(fig)
+
+
+def plot_correlation_heatmap(correlations_df: pd.DataFrame, out_path: Path, scope: str = "pooled", statistic: str = "spearman_rho") -> None:
+    """RQ4 figure: retrieval metric (rows) x generation metric (columns),
+    each cell the rank correlation, on a diverging scale fixed at [-1, 1] with a
+    neutral midpoint at 0. `correlations_df` is from
+    analysis.correlation.retrieval_generation_correlations."""
+    data = correlations_df[correlations_df["scope"] == scope] if not correlations_df.empty else correlations_df
+    if data.empty:
+        print("Skipping correlation heatmap: no data.")
+        return
+    from matplotlib.colors import LinearSegmentedColormap
+
+    table = data.pivot(index="retrieval_metric", columns="generation_metric", values=statistic)
+    table = table.loc[list(dict.fromkeys(data["retrieval_metric"])), list(dict.fromkeys(data["generation_metric"]))]
+    cmap = LinearSegmentedColormap.from_list("diverging", ["#eb6834", "#f2f1ec", "#2a78d6"])
+    fig, ax = plt.subplots(figsize=(1.5 * table.shape[1] + 2.2, 0.75 * table.shape[0] + 1.6))
+    image = ax.imshow(table.to_numpy(dtype=float), cmap=cmap, vmin=-1, vmax=1, aspect="auto")
+    for i in range(table.shape[0]):
+        for j in range(table.shape[1]):
+            value = table.iat[i, j]
+            ax.text(j, i, "n/a" if pd.isna(value) else f"{value:.2f}", ha="center", va="center", color=_INK, fontsize=9)
+    ax.set_xticks(np.arange(table.shape[1]))
+    ax.set_xticklabels(table.columns, rotation=30, ha="right", color=_INK)
+    ax.set_yticks(np.arange(table.shape[0]))
+    ax.set_yticklabels(table.index, color=_INK)
+    ax.tick_params(length=0)
+    for side in ax.spines.values():
+        side.set_visible(False)
+    colorbar = fig.colorbar(image, ax=ax, fraction=0.046, pad=0.04)
+    colorbar.outline.set_visible(False)
+    label = {"spearman_rho": "Spearman's rho", "kendall_tau": "Kendall's tau-b"}.get(statistic, statistic)
+    ax.set_title(f"{label}: retrieval vs generation metrics ({scope})", color=_INK, loc="left", fontsize=10)
+    fig.tight_layout()
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, dpi=150)
+    plt.close(fig)

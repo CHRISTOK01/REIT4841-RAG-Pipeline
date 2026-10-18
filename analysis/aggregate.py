@@ -55,6 +55,15 @@ STANDARD_METRIC_COLUMNS = [
 DELTA_BASES = ["faithfulness", "answer_relevance", "context_relevance", "reference_agreement", "abstained", "recall_at_k"]
 ROBUSTNESS_DELTA_COLUMNS = [f"{m}_delta" for m in DELTA_BASES]
 
+# Relative degradation (thesis Eq. 3.13): (baseline - perturbed) / baseline, for
+# the generation metrics where higher is better. Positive = the perturbation made
+# the score worse. A ratio over a baseline near zero is meaningless, so it is NaN
+# when the baseline is below REL_DEGRADATION_MIN_BASELINE; those queries still
+# appear in the absolute change, which is -<metric>_delta.
+REL_DEGRADATION_BASES = ["faithfulness", "answer_relevance", "context_relevance", "reference_agreement"]
+REL_DEGRADATION_MIN_BASELINE = 0.1
+ROBUSTNESS_REL_DEGRADATION_COLUMNS = [f"{m}_rel_degradation" for m in REL_DEGRADATION_BASES]
+
 
 class ResultsIntegrityError(RuntimeError):
     """The results log cannot be trusted as-is (unreadable lines or duplicate rows)."""
@@ -157,6 +166,14 @@ def load_standard_results(results_path: Path) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=columns)
 
 
+def relative_degradation(baseline: float, perturbed: float) -> float:
+    """(baseline - perturbed) / baseline; NaN if either is undefined or the
+    baseline is below REL_DEGRADATION_MIN_BASELINE."""
+    if math.isnan(baseline) or math.isnan(perturbed) or baseline < REL_DEGRADATION_MIN_BASELINE:
+        return math.nan
+    return (baseline - perturbed) / baseline
+
+
 def load_robustness_results(results_path: Path) -> pd.DataFrame:
     """One row per (kb_variant, retrieval_method, query, perturbation) robustness run."""
     rows = []
@@ -180,10 +197,13 @@ def load_robustness_results(results_path: Path) -> pd.DataFrame:
             row[f"baseline_{metric}"] = baseline[metric]
             row[f"perturbed_{metric}"] = perturbed[metric]
             row[f"{metric}_delta"] = perturbed[metric] - baseline[metric]  # NaN if either side is undefined
+        for metric in REL_DEGRADATION_BASES:
+            row[f"{metric}_rel_degradation"] = relative_degradation(baseline[metric], perturbed[metric])
         rows.append(row)
     columns = ["kb_variant", "retrieval_method", "query_id", "perturbation", "changed_chunk_id", "noise_chunk_id"]
     for metric in DELTA_BASES:
         columns += [f"baseline_{metric}", f"perturbed_{metric}", f"{metric}_delta"]
+    columns += ROBUSTNESS_REL_DEGRADATION_COLUMNS
     return pd.DataFrame(rows, columns=columns)
 
 
@@ -214,9 +234,10 @@ def aggregate_standard_metrics(df: pd.DataFrame, group_by: list[str] | None = No
 
 
 def aggregate_robustness_deltas(df: pd.DataFrame, group_by: list[str] | None = None) -> pd.DataFrame:
-    """Mean (NaN-skipping) delta + per-metric non-NaN count, default kb_variant x perturbation."""
+    """Mean (NaN-skipping) delta and relative degradation + per-metric non-NaN
+    count, default kb_variant x perturbation."""
     group_by = group_by or ["kb_variant", "perturbation"]
-    return _aggregate_with_per_metric_counts(df, group_by, ROBUSTNESS_DELTA_COLUMNS)
+    return _aggregate_with_per_metric_counts(df, group_by, ROBUSTNESS_DELTA_COLUMNS + ROBUSTNESS_REL_DEGRADATION_COLUMNS)
 
 
 def summarize_with_uncertainty(
