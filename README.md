@@ -1,6 +1,6 @@
 # RAG Retrieval-Quality Evaluation Pipeline
 
-Research codebase for a UQ REIT4841 thesis investigating:
+Research codebase for UQ REIT4841 thesis investigating:
 
 > How does retrieval quality influence the factual accuracy, relevance, and reliability of
 > outputs in a RAG-based pipeline for medical report/wellness summary generation?
